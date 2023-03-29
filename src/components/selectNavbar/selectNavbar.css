@@ -1,0 +1,36 @@
+.select-navbar{
+    height: 70px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #182f3f;
+}
+
+.select-navbar-item{
+    width: 14%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    position: relative;
+}
+
+#hover{
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    height: 4px;
+    background-color: #f37122;
+    display: none;
+}
+
+.select-navbar-item:hover > #hover{
+    display: block;
+}
+
+.select-navbar-item > span{
+    margin-left: 10px;
+    color: #fff;
+}
