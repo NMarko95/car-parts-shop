@@ -5,6 +5,9 @@
     align-items: center;
     justify-content: center;
     background-color: #182f3f;
+    position: sticky;
+    top: 70px;
+    z-index: 100;
 }
 
 .select-navbar-item{

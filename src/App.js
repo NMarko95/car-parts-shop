@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./pages/login/Login";
 import Navbar from "./components/navbar/Navbar";
 import SelectNavbar from "./components/selectNavbar/SelectNavbar";
+import PartsShow from "./components/partsShow/PartsShow";
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
       <div className="app">
         <Navbar />
         <SelectNavbar />
+        <PartsShow />
         <Routes>
           <Route element={<Register />} path="/register" />
           <Route element={<Login />} path="/login" />
