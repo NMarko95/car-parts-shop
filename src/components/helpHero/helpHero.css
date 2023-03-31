@@ -1,0 +1,96 @@
+.help-hero{
+    width: 80%;
+    height: 350px;
+    background-color: #ddd6d6;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin: 30px 0;
+}
+
+.help-hero-header{
+    border-radius: 10px 10px 0 0;
+    background-color: #f37122;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 15%;
+}
+
+.help-hero-header > h3{
+    font-size: 26px;
+    font-weight: 400;
+}
+
+.help-hero-main{
+    height: 85%;
+    width: 100%;
+    padding: 10px 15px;
+    display: flex;
+    align-items: center;
+}
+
+.help-hero-img{
+    width: 20%;
+    height: 85%;
+    border-radius: 5px;
+    object-fit: cover;
+}
+
+.help-hero-consult{
+    width: 40%;
+    height: 100%;
+    padding: 10px 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 10px;
+}
+
+.help-hero-consult-phone{
+    height: 40px;
+    width: 40%;
+    background-color: #182f3f;
+    color: #fff;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.help-hero-consult-phone > span{
+    font-weight: 600;
+    font-size: 22px;
+}
+
+.help-hero-consult-offer{
+    height: 40px;
+    width: 95%;
+    background-color: #182f3f;
+    color: #fff;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.help-hero-consult-offer > span{
+    font-weight: 600;
+    font-size: 22px;
+}
+
+.help-hero-description{
+    width: 40%;
+    height: 100%;
+    padding: 10px;
+    font-size: 15px;
+    font-weight: 350;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+}

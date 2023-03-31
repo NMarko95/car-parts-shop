@@ -1,6 +1,6 @@
 .login{
     height: 100vh;
-    width: 100vw;
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -8,7 +8,7 @@
 
 .login-wrapper{
     height: 60%;
-    width: 50%;
+    width: 40%;
     display: flex;
     flex-direction: column;
     border: 1px solid #c6c1c1;

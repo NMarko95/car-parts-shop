@@ -1,0 +1,166 @@
+.admin-panel{
+    width: 100%;
+    display: flex;
+}
+
+.admin-panel-asside{
+    flex: 1;
+    height: 100vh;
+    background-color: #182f3f;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
+}
+
+.admin-panel-asside-item{
+    width: 100%;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.admin-panel-asside-item:hover{
+    background-color: #fff;
+    color: #182f3f;
+}
+
+.admin-panel-main{
+    flex: 7;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px;
+}
+
+.admin-panel-header{
+    width: 80%;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+}
+
+.admin-panel-title{
+    font-size: 25px;
+    font-weight: 700;
+    color: #182f3f;
+}
+
+.admin-panel-add-btn{
+    padding: 5px 20px;
+    border: none;
+    background-color: #182f3f;
+    color: #fff;
+    transition: 0.2s;
+    cursor: pointer;
+}
+
+.admin-panel-add-btn:hover{
+    background-color: #f37122;
+}
+
+.admin-panel-add{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.admin-panel-input{
+    width: 20%;
+    height: 100%;
+}
+
+.admin-panel-input-box{
+    width: 100%;
+    padding: 0 5px;
+    outline: none;
+}
+
+.admin-panel-main-list{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin: 30px 0;
+    overflow-y: scroll;
+    height: 400px;
+}
+
+.admin-panel-main-header{
+    display: flex;
+    justify-content: flex-start;
+    width: 100%;
+    min-height: 30px;
+    background-color: #182f3f;
+    color: #fff;
+}
+
+.admin-panel-main-item{
+    width: 20%;
+    padding: 0 5px;
+    border: 1px solid #182f3f;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    overflow: hidden;
+}
+
+.admin-panel-main-row{
+    width: 100%;
+    display: flex;
+    min-height: 30px;
+}
+
+.admin-panel-main-item-options{
+    width: 20%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    border: 1px solid #182f3f;   
+}
+
+.admin-panel-update{
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    background-color: #383838;
+    opacity: 0.9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.admin-panel-update-wrapper{
+    height: 50%;
+    width: 50%;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 20px;
+    gap: 20px;
+}
+
+.admin-panel-update-input{
+    width: 80%;
+    height: 50px;
+}
+
+.admin-panel-update-input-box{
+    width: 100%;
+    height: 30px;
+}
