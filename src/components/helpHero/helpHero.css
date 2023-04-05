@@ -53,18 +53,20 @@
 
 .help-hero-consult-phone{
     height: 40px;
-    width: 40%;
+    width: 70%;
     background-color: #182f3f;
     color: #fff;
     border-radius: 5px;
     display: flex;
     align-items: center;
-    justify-content: space-around;
+    justify-content: flex-start;
+    padding-left: 10px;
+    gap: 10px;
 }
 
 .help-hero-consult-phone > span{
     font-weight: 600;
-    font-size: 22px;
+    font-size: 18px;
 }
 
 .help-hero-consult-offer{
@@ -75,12 +77,14 @@
     border-radius: 5px;
     display: flex;
     align-items: center;
-    justify-content: space-around;
+    justify-content: flex-start;
+    padding-left: 10px;
+    gap: 10px;
 }
 
 .help-hero-consult-offer > span{
     font-weight: 600;
-    font-size: 22px;
+    font-size: 18px;
 }
 
 .help-hero-description{

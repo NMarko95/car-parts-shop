@@ -7,6 +7,7 @@ import SelectNavbar from "./components/selectNavbar/SelectNavbar";
 import PartsShow from "./components/partsShow/PartsShow";
 import HelpHero from "./components/helpHero/HelpHero";
 import AdminPanel from "./pages/adminPanel/AdminPanel";
+import ChooseGroup from "./pages/chooseGroup/ChooseGroup";
 
 function App() {
   return (
@@ -15,11 +16,12 @@ function App() {
         <Navbar />
         <SelectNavbar />
         <HelpHero />
-        <PartsShow />
         <Routes>
           <Route element={<Register />} path="/register" />
           <Route element={<Login />} path="/login" />
           <Route element={<AdminPanel />} path="/admin" />
+          <Route element={<PartsShow />} path="/parts" />
+          <Route element={<ChooseGroup />} path="/choose" />
         </Routes>
       </div>
     </BrowserRouter>
