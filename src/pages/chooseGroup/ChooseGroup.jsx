@@ -10,7 +10,7 @@ const ChooseGroup = () => {
           className="choose-group-header-image"
         />
         <div className="choose-group-header-info">
-          <h3 className="choose-group-header-info-title">Ulja i tecnosti</h3>
+          <h3 className="choose-group-title">Ulja i tecnosti</h3>
           <div className="choose-group-header-info-description">
             Tražite motorno ulje, ulje za menjač, ulje za kočnice ili ulje za
             automatski menjač? Potreban vam je antifriz ili tečnost za staklo?
@@ -24,7 +24,78 @@ const ChooseGroup = () => {
           </button>
         </div>
       </div>
-      <div className="choose-group-list"></div>
+      <div className="choose-group-list">
+        <span>
+          Svi proizvodi za{" "}
+          <h3 className="choose-group-title">Ulja i tecnosti</h3>
+        </span>
+        <div className="choose-group-select">
+          <article className="choose-group-select-item">
+            <img
+              src="https://www.prodajadelova.rs/images/thumbs/0007223_motorno-ulje_450.jpeg"
+              alt=""
+              className="choose-group-select-item-image"
+            />
+            <h4 className="choose-group-select-item-title">Motorno ulje</h4>
+          </article>
+          <article className="choose-group-select-item">
+            <img
+              src="https://www.prodajadelova.rs/images/thumbs/0007223_motorno-ulje_450.jpeg"
+              alt=""
+              className="choose-group-select-item-image"
+            />
+            <h4 className="choose-group-select-item-title">Motorno ulje</h4>
+          </article>
+          <article className="choose-group-select-item">
+            <img
+              src="https://www.prodajadelova.rs/images/thumbs/0007223_motorno-ulje_450.jpeg"
+              alt=""
+              className="choose-group-select-item-image"
+            />
+            <h4 className="choose-group-select-item-title">Motorno ulje</h4>
+          </article>
+          <article className="choose-group-select-item">
+            <img
+              src="https://www.prodajadelova.rs/images/thumbs/0007223_motorno-ulje_450.jpeg"
+              alt=""
+              className="choose-group-select-item-image"
+            />
+            <h4 className="choose-group-select-item-title">Motorno ulje</h4>
+          </article>
+          <article className="choose-group-select-item">
+            <img
+              src="https://www.prodajadelova.rs/images/thumbs/0007223_motorno-ulje_450.jpeg"
+              alt=""
+              className="choose-group-select-item-image"
+            />
+            <h4 className="choose-group-select-item-title">Motorno ulje</h4>
+          </article>
+          <article className="choose-group-select-item">
+            <img
+              src="https://www.prodajadelova.rs/images/thumbs/0007223_motorno-ulje_450.jpeg"
+              alt=""
+              className="choose-group-select-item-image"
+            />
+            <h4 className="choose-group-select-item-title">Motorno ulje</h4>
+          </article>
+          <article className="choose-group-select-item">
+            <img
+              src="https://www.prodajadelova.rs/images/thumbs/0007223_motorno-ulje_450.jpeg"
+              alt=""
+              className="choose-group-select-item-image"
+            />
+            <h4 className="choose-group-select-item-title">Motorno ulje</h4>
+          </article>
+          <article className="choose-group-select-item">
+            <img
+              src="https://www.prodajadelova.rs/images/thumbs/0007223_motorno-ulje_450.jpeg"
+              alt=""
+              className="choose-group-select-item-image"
+            />
+            <h4 className="choose-group-select-item-title">Motorno ulje</h4>
+          </article>
+        </div>
+      </div>
     </div>
   );
 };

@@ -1,11 +1,11 @@
 .choose-group{
-    width: 100%;
+    width: 90%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     padding: 20px 30px;
-    margin: 30px 0;
+    margin: 20px 0;
 }
 
 .choose-group-header{
@@ -31,7 +31,7 @@
     gap: 20px;
 }
 
-.choose-group-header-info-title{
+.choose-group-title{
     font-size: 25px;
     font-weight: 700;
     color: #6a6868;
@@ -52,8 +52,64 @@
     color: #fff;
     border: none;
     transition: 0.3s ease;
+    border-radius: 5px;
 }
 
 .choose-group-header-info-btn:hover{
     background-color: #111;
+}
+
+.choose-group-list{
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+.choose-group-list > span{
+    font-size: 25px;
+    color: #6a6868;
+    font-weight: 400;
+    display: flex;
+    align-items: center;
+}
+
+.choose-group-list > span > h3{
+    margin-left: 7px;
+}
+
+.choose-group-select{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    margin: 30px;
+    gap: 20px;
+}
+
+.choose-group-select-item{
+    width: 30%;
+    height: 150px;
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #6a6868;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.choose-group-select-item-image{
+    height: 100px;
+    width: 100px;
+    object-fit: cover;
+}
+
+.choose-group-select-item-title{
+    color: #182f3f;
+    font-size: 20px;
+    font-weight: 500;
 }
