@@ -9,6 +9,7 @@ import HelpHero from "./components/helpHero/HelpHero";
 import AdminPanel from "./pages/adminPanel/AdminPanel";
 import ChooseGroup from "./pages/chooseGroup/ChooseGroup";
 import Footer from "./components/footer/Footer";
+import Products from "./pages/products/Products";
 
 function App() {
   return (
@@ -18,11 +19,12 @@ function App() {
         <SelectNavbar />
         <HelpHero />
         <Routes>
-          <Route element={<Register />} path="/register" />
+          <Route element={<Register />} path={`/register`} />
           <Route element={<Login />} path="/login" />
           <Route element={<AdminPanel />} path="/admin" />
           <Route element={<PartsShow />} path="/parts" />
           <Route element={<ChooseGroup />} path="/choose" />
+          <Route element={<Products />} path="/products" />
         </Routes>
         <Footer />
       </div>

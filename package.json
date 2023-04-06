@@ -29,6 +29,7 @@
     ]
   },
   "browserslist": {
+    "proxy": "https://splendorous-scone-51fdf2.netlify.app/",
     "production": [
       ">0.2%",
       "not dead",
