@@ -20,10 +20,10 @@ const ProductInformation = () => {
       </div>
       <div className="product-information-price">
         <span className="text">Cena:</span>
-        <h4 className="price">
-          <h3>865,</h3>
+        <h3 className="price">
+          <h4>865,</h4>
           <span>20</span> sa PDV-om
-        </h4>
+        </h3>
       </div>
       <button className="product-information-btn cart">
         <ShoppingCartIcon
