@@ -1,10 +1,11 @@
 import { useState } from "react";
 import "./products.css";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
+import ProductInformation from "../../components/productInformation/ProductInformation";
 
 const Products = () => {
   const [isClicked, setIsClicked] = useState({
@@ -20,6 +21,8 @@ const Products = () => {
     paddingRight: "5px",
     cursor: "pointer",
   };
+
+  const [isChecked, setIsChecked] = useState(false);
 
   return (
     <div className="products">
@@ -171,6 +174,76 @@ const Products = () => {
           </h2>
           <div className="products-filter-separator" />
           <div className="products-filter-list">
+            <article
+              className={`${
+                isChecked
+                  ? "products-filter-list-item clicked"
+                  : "products-filter-list-item"
+              }`}
+            >
+              <img
+                src="https://automarket.blob.core.windows.net/articleimagesplus-prod/17e980a0-5a57-4dac-a8aa-fe28daea59b6"
+                alt=""
+                className={`${
+                  isChecked
+                    ? "products-filter-list-item-image clicked"
+                    : "products-filter-list-item-image"
+                }`}
+              />
+              <div className="products-filter-list-item-desc">
+                <h3 className="products-filter-list-item-desc-title">
+                  MOBIL - 150866 - ULJE ZA MOTOR (HEMIJSKI PROIZVODI)
+                </h3>
+                <div
+                  className={`${
+                    isChecked
+                      ? "products-filter-list-item-desc-information clicked"
+                      : "products-filter-list-item-desc-information"
+                  }`}
+                >
+                  <span className="products-filter-list-item-desc-information-text odd">
+                    Klasa viskoznosti SAE: 15W40
+                  </span>
+                  <span className="products-filter-list-item-desc-information-text even">
+                    sa logom firme: MOBIL
+                  </span>
+                  <span className="products-filter-list-item-desc-information-text odd">
+                    Tehnička informacija broj: 15W40
+                  </span>
+                  <span className="products-filter-list-item-desc-information-text odd">
+                    Klasa viskoznosti SAE: 15W40
+                  </span>
+                  <span className="products-filter-list-item-desc-information-text even">
+                    sa logom firme: MOBIL
+                  </span>
+                  <span className="products-filter-list-item-desc-information-text odd">
+                    Tehnička informacija broj: 15W40
+                  </span>
+                  <span className="products-filter-list-item-desc-information-text odd">
+                    Klasa viskoznosti SAE: 15W40
+                  </span>
+                  <span className="products-filter-list-item-desc-information-text even">
+                    sa logom firme: MOBIL
+                  </span>
+                  <span className="products-filter-list-item-desc-information-text odd">
+                    Tehnička informacija broj: 15W40
+                  </span>
+                </div>
+                <div className="products-filter-list-item-desc-separator">
+                  <div className="products-filter-list-item-desc-line"></div>
+                  <div
+                    className="products-filter-list-item-desc-circle"
+                    onClick={(e) => setIsChecked(!isChecked)}
+                  >
+                    {`${isChecked ? "-" : "+"}`}
+                  </div>
+                </div>
+                <button className="products-filter-list-item-desc-button">
+                  Detalji
+                </button>
+              </div>
+              <ProductInformation />
+            </article>
             <article className="products-filter-list-item">
               <img
                 src="https://automarket.blob.core.windows.net/articleimagesplus-prod/17e980a0-5a57-4dac-a8aa-fe28daea59b6"
@@ -208,9 +281,9 @@ const Products = () => {
                   <LocalPhoneIcon />
                   <span>060-555-333</span>
                 </div>
-                <div className="products-filter-list-item-info-contact available">
-                  <CheckCircleIcon />
-                  <span>Dostupno</span>
+                <div className="products-filter-list-item-info-contact unavailable">
+                  <HighlightOffIcon />
+                  <span>Nedostupno</span>
                 </div>
                 <div className="products-filter-list-item-info-price">
                   <span className="text">Cena:</span>

@@ -10,6 +10,7 @@ import AdminPanel from "./pages/adminPanel/AdminPanel";
 import ChooseGroup from "./pages/chooseGroup/ChooseGroup";
 import Footer from "./components/footer/Footer";
 import Products from "./pages/products/Products";
+import SingleProduct from "./pages/singleProduct/SingleProduct";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
           <Route element={<PartsShow />} path="/parts" />
           <Route element={<ChooseGroup />} path="/choose" />
           <Route element={<Products />} path="/products" />
+          <Route element={<SingleProduct />} path="/product" />
         </Routes>
         <Footer />
       </div>
