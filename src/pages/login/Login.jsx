@@ -1,11 +1,17 @@
 import { useState } from "react";
 import "./login.css";
+import axios from 'axios'
+import { useGlobalContext } from "../../context/Context";
 
 const Login = () => {
   const [loggedUser, setloggedUser] = useState({
+    firstname: "",
+    lastname: "",
     email: "",
     password: "",
   });
+
+  const {setUser} = useGlobalContext()
 
   let dataEntries = [
     {
@@ -18,9 +24,12 @@ const Login = () => {
     },
   ];
 
-  const handleLogin = () => {
+  const handleLogin = async() => {
     // izmeni funkciju kad se doda api za registraciju
-    console.log(loggedUser);
+    const {data} = await axios.post("https://localhost:7236/User/Login", loggedUser);
+    setUser(data);
+    localStorage.setItem("user", JSON.stringify(data));
+    window.location.replace("/")
   };
 
   return (
