@@ -3,7 +3,7 @@ import CreateIcon from "@mui/icons-material/Create";
 import DeleteIcon from "@mui/icons-material/Delete";
 import axios from "axios";
 
-const AdminComponent = ({ emptyObject, dataEntries, urls }) => {
+const AdminComponent = ({ emptyObject, dataEntries, urls, name }) => {
   const [state, setState] = useState([]);
   const [newObject, setNewObject] = useState(emptyObject);
   const [isAdding, setIsAdding] = useState(false);
@@ -11,7 +11,7 @@ const AdminComponent = ({ emptyObject, dataEntries, urls }) => {
 
   const handleAdd = async () => {
     const { data } = await axios.post(urls[0], newObject);
-    const newCreatedObject = { ...newObject, id: data };
+    const newCreatedObject = { id: data, ...newObject };
     setState([...state, newCreatedObject]);
     setNewObject(emptyObject);
     setIsAdding(false);
@@ -62,7 +62,7 @@ const AdminComponent = ({ emptyObject, dataEntries, urls }) => {
   return (
     <>
       <div className="admin-users-header">
-        <h3 className="admin-users-title">List</h3>
+        <h3 className="admin-users-title">{name} List</h3>
         <button
           onClick={(e) => setIsAdding(!isAdding)}
           className="admin-users-add-btn"
@@ -97,18 +97,19 @@ const AdminComponent = ({ emptyObject, dataEntries, urls }) => {
       <div className="admin-users-main-list">
         <div className="admin-users-main-header">
           <div className="admin-users-main-item">ID</div>
-          {dataEntries.map((de) => {
-            return <div className="admin-users-main-item">{de.name}</div>;
+          {dataEntries.map((de, i) => {
+            return (
+              <div className="admin-users-main-item" key={i}>
+                {de.name}
+              </div>
+            );
           })}
         </div>
         {state.length !== 0 &&
           state.map((obj) => {
-            // promeni iz emptyObject-a u realni object (obj) !!!!!!!!!!!!
             return (
               <div className="admin-users-main-row" key={obj.id}>
-                <div className="admin-users-main-item">{obj.id}</div>
-                {Object.entries(emptyObject).map((entry) => {
-                  console.log(entry);
+                {Object.entries(obj).map((entry) => {
                   return (
                     <div className="admin-users-main-item">{entry[1]}</div>
                   );

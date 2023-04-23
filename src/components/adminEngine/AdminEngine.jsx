@@ -1,10 +1,10 @@
 import AdminComponent from "../../custom/AdminComponent/AdminComponent";
 
-const AdminEngine = () => {
+const AdminEngine = ({ name }) => {
   const emptyObject = {
-    name: "asdas",
-    power: "asdasd",
-    volume: "asdasd",
+    name: "",
+    power: "",
+    volume: "",
   };
 
   const baseUrl = "https://localhost:7236/Engine";
@@ -27,6 +27,7 @@ const AdminEngine = () => {
 
   return (
     <AdminComponent
+      name={name}
       emptyObject={emptyObject}
       urls={urls}
       dataEntries={dataEntries}

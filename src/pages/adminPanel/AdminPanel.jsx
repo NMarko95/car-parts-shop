@@ -63,7 +63,7 @@ const AdminPanel = () => {
         ) : current === "Groups" ? (
           <AdminGroups />
         ) : current === "Engines" ? (
-          <AdminEngine />
+          <AdminEngine name={current} />
         ) : (
           <AdminVehicle />
         )}

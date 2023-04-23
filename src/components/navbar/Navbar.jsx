@@ -4,8 +4,12 @@ import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
 import PersonIcon from "@mui/icons-material/Person";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
+import MiniCart from "../miniCart/MiniCart";
+import { useState } from "react";
 
 const Navbar = () => {
+  const [isDisplayed, setIsDisplayed] = useState(false);
+
   return (
     <div className="navbar">
       <div className="navbar-logo">
@@ -37,9 +41,13 @@ const Navbar = () => {
         <div className="navbar-wishlist">
           <LocalShippingIcon style={{ color: "#182f3f" }} />
         </div>
-        <div className="navbar-cart">
+        <div
+          className="navbar-cart"
+          onClick={(e) => setIsDisplayed(!isDisplayed)}
+        >
           <ShoppingCartIcon style={{ color: "#182f3f" }} />
           <span>KORPA</span>
+          {isDisplayed && <MiniCart />}
         </div>
       </div>
     </div>

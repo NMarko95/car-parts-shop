@@ -12,6 +12,7 @@ import Footer from "./components/footer/Footer";
 import Products from "./pages/products/Products";
 import SingleProduct from "./pages/singleProduct/SingleProduct";
 import { AppProvider } from "./context/Context";
+import Cart from "./pages/cart/Cart";
 
 function App() {
   return (
@@ -20,7 +21,7 @@ function App() {
         <div className="app">
           <Navbar />
           <SelectNavbar />
-          <HelpHero />
+          {/*<HelpHero />*/}
           <Routes>
             <Route element={<Register />} path={`/register`} />
             <Route element={<Login />} path="/login" />
@@ -29,6 +30,7 @@ function App() {
             <Route element={<ChooseGroup />} path="/choose" />
             <Route element={<Products />} path="/products" />
             <Route element={<SingleProduct />} path="/product" />
+            <Route element={<Cart />} path="/cart" />
           </Routes>
           <Footer />
         </div>
