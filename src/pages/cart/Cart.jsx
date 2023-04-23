@@ -25,6 +25,17 @@ const Cart = () => {
     },
   ];
 
+  const calculateSum = () => {
+    let sum = 0;
+    items.forEach((item) => {
+      const { quantity, price } = item;
+      sum += quantity * price;
+    });
+    return sum;
+  };
+
+  const delivery = 360;
+
   return (
     <div className="cart">
       <h3>Korpa</h3>
@@ -57,7 +68,7 @@ const Cart = () => {
               <div className="cart-list-item-info">
                 <span>Cena:</span>
                 <h4>{price} sa PDV-om</h4>
-                <input value={quantity} className="cart-list-item-quantity" />
+                <div className="cart-list-item-quantity">{quantity}</div>
                 <div className="cart-list-item-remove">
                   <input type="checkbox" />
                   <span>Uklonite</span>
@@ -66,6 +77,56 @@ const Cart = () => {
             </article>
           );
         })}
+      </div>
+      <div className="cart-buttons">
+        <button className="cart-buttons-btn update">
+          azuriraj korpu za kupovinu
+        </button>
+        <button className="cart-buttons-btn pdf">izvezite korpu u pdf</button>
+        <button className="cart-buttons-btn continue">nastavi</button>
+      </div>
+      <hr className="cart-separator" />
+      <div className="cart-checkout">
+        <div className="cart-checkout-left">
+          <div className="cart-checkout-left-container">
+            <span>Broj sasije</span>
+            <input placeholder="Unesite broj sasije radi provere ispravnosti" />
+          </div>
+          <div className="cart-checkout-left-container">
+            <span>Kod za popust</span>
+            <input placeholder="Unesite vas kupon ovde" />
+          </div>
+          <button className="cart-checkout-left-btn">DODAJTE</button>
+        </div>
+        <div className="cart-checkout-right">
+          <div className="cart-checkout-right-container">
+            <span>Iznos:</span>
+            <span>{calculateSum()} sa PDV-om</span>
+          </div>
+          <div className="cart-checkout-right-container">
+            <span>Isporuka:</span>
+            <span>{delivery} sa PDV-om</span>
+          </div>
+          <div className="cart-checkout-right-container">
+            <span>PDV:</span>
+            <span>433,40</span>
+          </div>
+          <div className="cart-checkout-right-sum">
+            <h3>Ukupno:</h3>
+            <h3>
+              {calculateSum() + delivery} <span>sa PDV-om</span>
+            </h3>
+          </div>
+          <hr />
+          <div className="cart-checkout-right-accept">
+            <input type="checkbox" />
+            Prihvatam Uslove poslovanja i Pravilnik o zaštiti podataka o
+            ličnosti (saznajte više)
+          </div>
+          <button className="cart-checkout-right-button">
+            ZAVRSI PORUDZBINU
+          </button>
+        </div>
       </div>
     </div>
   );
