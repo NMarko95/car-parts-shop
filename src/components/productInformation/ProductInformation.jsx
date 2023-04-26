@@ -25,7 +25,7 @@ const ProductInformation = () => {
           <span>20</span> sa PDV-om
         </h3>
       </div>
-      <button className="product-information-btn cart">
+      <button className="product-information-btn cart-btn">
         <ShoppingCartIcon
           style={{ height: "20px", width: "20px" }}
           className="product-information-icon"

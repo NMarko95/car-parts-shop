@@ -226,6 +226,7 @@
     border: 1px solid #9f9b9b;
     border-radius: 5px;
     transition: 0.3s ease;
+    text-decoration: none;
 }
 
 .products-filter-list-item.clicked{
@@ -244,6 +245,7 @@
     margin-bottom: 30px;
     align-self: flex-start;
     margin-top: 50px;
+    object-fit: contain;
 }
 
 .products-filter-list-item:hover > .products-filter-list-item-image{
@@ -265,6 +267,7 @@
     font-size: 18px;
     font-weight: 500;
     color: #3e3d3d;
+    text-decoration: none;
 }
 
 .products-filter-list-item-desc-information{

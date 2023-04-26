@@ -79,14 +79,14 @@
     position: relative;
 }
 
-.product-information-btn.cart{
+.product-information-btn.cart-btn{
     background-color: #f37122;
     color: #fff;
     border: none;
     margin-bottom: 5px;
 }
 
-.product-information-btn.cart:hover{
+.product-information-btn.cart-btn:hover{
     background-color: #9c3f05;
 }
 

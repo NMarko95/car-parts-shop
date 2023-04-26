@@ -1,6 +1,6 @@
 import "./app.css";
 import Register from "./pages/register/Register";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Login from "./pages/login/Login";
 import Navbar from "./components/navbar/Navbar";
 import SelectNavbar from "./components/selectNavbar/SelectNavbar";
@@ -13,28 +13,57 @@ import Products from "./pages/products/Products";
 import SingleProduct from "./pages/singleProduct/SingleProduct";
 import { AppProvider } from "./context/Context";
 import Cart from "./pages/cart/Cart";
+import Homepage from "./pages/homepage/Homepage";
+
+const router = createBrowserRouter([
+  {
+    path: "/register",
+    element: <Register />,
+  },
+  {
+    path: "/login",
+    element: <Login />,
+  },
+  {
+    path: "/admin",
+    element: <AdminPanel />,
+  },
+  {
+    path: "/parts",
+    element: <PartsShow />,
+  },
+  {
+    path: "/",
+    element: <Homepage />,
+  },
+  {
+    path: "/choose/:catid",
+    element: <ChooseGroup />,
+  },
+  {
+    path: "/products/:gid",
+    element: <Products />,
+  },
+  {
+    path: "/product/:pid",
+    element: <SingleProduct />,
+  },
+  {
+    path: "/cart",
+    element: <Cart />,
+  },
+]);
 
 function App() {
   return (
     <AppProvider>
-      <BrowserRouter>
-        <div className="app">
-          <Navbar />
-          <SelectNavbar />
-          {/*<HelpHero />*/}
-          <Routes>
-            <Route element={<Register />} path={`/register`} />
-            <Route element={<Login />} path="/login" />
-            <Route element={<AdminPanel />} path="/admin" />
-            <Route element={<PartsShow />} path="/parts" />
-            <Route element={<ChooseGroup />} path="/choose" />
-            <Route element={<Products />} path="/products" />
-            <Route element={<SingleProduct />} path="/product" />
-            <Route element={<Cart />} path="/cart" />
-          </Routes>
-          <Footer />
-        </div>
-      </BrowserRouter>
+      <div className="app">
+        <Navbar />
+        <SelectNavbar />
+        {/*<HelpHero />*/}
+        <RouterProvider router={router} />
+        <Footer />
+      </div>
     </AppProvider>
   );
 }

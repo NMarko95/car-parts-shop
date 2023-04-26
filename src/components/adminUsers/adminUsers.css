@@ -52,8 +52,8 @@
     flex-direction: column;
     width: 100%;
     margin: 30px 0;
-    overflow-y: scroll;
-    height: 400px;
+    overflow-y: auto;
+    height: 350px;
 }
 
 .admin-users-main-header{
@@ -79,6 +79,7 @@
     width: 100%;
     display: flex;
     min-height: 30px;
+    cursor: pointer;
 }
 
 .admin-users-main-item-options{

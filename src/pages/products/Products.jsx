@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./products.css";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
@@ -6,12 +6,20 @@ import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import ProductInformation from "../../components/productInformation/ProductInformation";
+import axios from "axios";
+import { useParams, Link } from "react-router-dom";
 
 const Products = () => {
+  const { gid } = useParams();
+
   const [isClicked, setIsClicked] = useState({
     index: "",
     value: false,
   });
+  const [isChecked, setIsChecked] = useState(false);
+  const [products, setProducts] = useState([]);
+  const [information, setInformation] = useState([]);
+  const [groupInfoLength, setGroupInfoLength] = useState(0);
 
   const fakeData = ["Viskoznost", "Proizvodjac", "Zapremina"];
 
@@ -22,7 +30,29 @@ const Products = () => {
     cursor: "pointer",
   };
 
-  const [isChecked, setIsChecked] = useState(false);
+  const baseURL = "https://localhost:7236";
+
+  useEffect(() => {
+    const getProducts = async () => {
+      const { data } = await axios.get(`${baseURL}/Product/GetProduct/${gid}`);
+      if (data.length !== 0) {
+        const response = await Promise.all(
+          data.map((p) => {
+            return axios.get(
+              `${baseURL}/GroupInformationData/GetGroupInformationData/${gid}/${p.id}`
+            );
+          })
+        );
+        const newResponse = response.map((r, i) => {
+          return { ...data[i], gi: r.data };
+        });
+        setProducts(newResponse);
+      }
+    };
+    getProducts();
+  }, [gid]);
+
+  console.log(products);
 
   return (
     <div className="products">
@@ -31,85 +61,86 @@ const Products = () => {
           URADITE PRETRAGU ODGOVARAJUCEG ULJA PREKO KARAKTERISTIKA
         </h3>
         <div className="products-search-container">
-          {fakeData.map((item, index) => {
-            return (
-              <div className="products-search-info" key={index}>
-                <div
-                  className={
-                    isClicked.value && index === isClicked.index
-                      ? "products-search-info-number clicked"
-                      : "products-search-info-number"
-                  }
-                >
-                  {index + 1}
-                </div>
-                <span
-                  className={
-                    isClicked.value && index === isClicked.index
-                      ? "products-search-info-title clicked"
-                      : "products-search-info-title"
-                  }
-                >
-                  {item}
-                </span>
-                <KeyboardArrowDownIcon
-                  onClick={(e) => {
-                    setIsClicked({
-                      index,
-                      value: !isClicked.value,
-                    });
-                  }}
-                  style={
-                    isClicked.value && index === isClicked.index
-                      ? { ...iconStyles, color: "#f37122" }
-                      : iconStyles
-                  }
-                  className="products-search-arrow"
-                />
-                {isClicked.value && index === isClicked.index && (
-                  <div className="products-search-info-select">
-                    <input className="products-search-info-select-input" />
-                    <span className="products-search-info-select-text">
-                      asdasd
-                    </span>
-                    <span className="products-search-info-select-text">
-                      12qweqw3123
-                    </span>
-                    <span className="products-search-info-select-text">
-                      zcvzcv
-                    </span>
-                    <span className="products-search-info-select-text">
-                      jrrfthdfg
-                    </span>
-                    <span className="products-search-info-select-text">
-                      123sdfdsf123
-                    </span>
-                    <span className="products-search-info-select-text">
-                      qqqqet
-                    </span>
-                    <span className="products-search-info-select-text">
-                      123123
-                    </span>
-                    <span className="products-search-info-select-text">
-                      123123
-                    </span>
-                    <span className="products-search-info-select-text">
-                      123123
-                    </span>
-                    <span className="products-search-info-select-text">
-                      123123
-                    </span>
-                    <span className="products-search-info-select-text">
-                      123123
-                    </span>
-                    <span className="products-search-info-select-text">
-                      123123
-                    </span>
+          {products.length !== 0 &&
+            products[0].gi.map((item, index) => {
+              return (
+                <div className="products-search-info" key={item.id}>
+                  <div
+                    className={
+                      isClicked.value && index === isClicked.index
+                        ? "products-search-info-number clicked"
+                        : "products-search-info-number"
+                    }
+                  >
+                    {index + 1}
                   </div>
-                )}
-              </div>
-            );
-          })}
+                  <span
+                    className={
+                      isClicked.value && index === isClicked.index
+                        ? "products-search-info-title clicked"
+                        : "products-search-info-title"
+                    }
+                  >
+                    {item.name}
+                  </span>
+                  <KeyboardArrowDownIcon
+                    onClick={(e) => {
+                      setIsClicked({
+                        index,
+                        value: !isClicked.value,
+                      });
+                    }}
+                    style={
+                      isClicked.value && index === isClicked.index
+                        ? { ...iconStyles, color: "#f37122" }
+                        : iconStyles
+                    }
+                    className="products-search-arrow"
+                  />
+                  {isClicked.value && index === isClicked.index && (
+                    <div className="products-search-info-select">
+                      <input className="products-search-info-select-input" />
+                      <span className="products-search-info-select-text">
+                        asdasd
+                      </span>
+                      <span className="products-search-info-select-text">
+                        12qweqw3123
+                      </span>
+                      <span className="products-search-info-select-text">
+                        zcvzcv
+                      </span>
+                      <span className="products-search-info-select-text">
+                        jrrfthdfg
+                      </span>
+                      <span className="products-search-info-select-text">
+                        123sdfdsf123
+                      </span>
+                      <span className="products-search-info-select-text">
+                        qqqqet
+                      </span>
+                      <span className="products-search-info-select-text">
+                        123123
+                      </span>
+                      <span className="products-search-info-select-text">
+                        123123
+                      </span>
+                      <span className="products-search-info-select-text">
+                        123123
+                      </span>
+                      <span className="products-search-info-select-text">
+                        123123
+                      </span>
+                      <span className="products-search-info-select-text">
+                        123123
+                      </span>
+                      <span className="products-search-info-select-text">
+                        123123
+                      </span>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
         </div>
         <button className="products-search-btn">PRETRAGA</button>
       </div>
@@ -173,78 +204,75 @@ const Products = () => {
             po stranici
           </h2>
           <div className="products-filter-separator" />
-          <div className="products-filter-list">
-            <article
-              className={`${
-                isChecked
-                  ? "products-filter-list-item clicked"
-                  : "products-filter-list-item"
-              }`}
-            >
-              <img
-                src="https://automarket.blob.core.windows.net/articleimagesplus-prod/17e980a0-5a57-4dac-a8aa-fe28daea59b6"
-                alt=""
-                className={`${
-                  isChecked
-                    ? "products-filter-list-item-image clicked"
-                    : "products-filter-list-item-image"
-                }`}
-              />
-              <div className="products-filter-list-item-desc">
-                <h3 className="products-filter-list-item-desc-title">
-                  MOBIL - 150866 - ULJE ZA MOTOR (HEMIJSKI PROIZVODI)
-                </h3>
-                <div
-                  className={`${
-                    isChecked
-                      ? "products-filter-list-item-desc-information clicked"
-                      : "products-filter-list-item-desc-information"
-                  }`}
-                >
-                  <span className="products-filter-list-item-desc-information-text odd">
-                    Klasa viskoznosti SAE: 15W40
-                  </span>
-                  <span className="products-filter-list-item-desc-information-text even">
-                    sa logom firme: MOBIL
-                  </span>
-                  <span className="products-filter-list-item-desc-information-text odd">
-                    Tehnička informacija broj: 15W40
-                  </span>
-                  <span className="products-filter-list-item-desc-information-text odd">
-                    Klasa viskoznosti SAE: 15W40
-                  </span>
-                  <span className="products-filter-list-item-desc-information-text even">
-                    sa logom firme: MOBIL
-                  </span>
-                  <span className="products-filter-list-item-desc-information-text odd">
-                    Tehnička informacija broj: 15W40
-                  </span>
-                  <span className="products-filter-list-item-desc-information-text odd">
-                    Klasa viskoznosti SAE: 15W40
-                  </span>
-                  <span className="products-filter-list-item-desc-information-text even">
-                    sa logom firme: MOBIL
-                  </span>
-                  <span className="products-filter-list-item-desc-information-text odd">
-                    Tehnička informacija broj: 15W40
-                  </span>
-                </div>
-                <div className="products-filter-list-item-desc-separator">
-                  <div className="products-filter-list-item-desc-line"></div>
-                  <div
-                    className="products-filter-list-item-desc-circle"
-                    onClick={(e) => setIsChecked(!isChecked)}
+          {products.length !== 0 && (
+            <div className="products-filter-list">
+              {products.map((p) => {
+                const { id, picture, name, gi } = p;
+                return (
+                  <article
+                    className={`${
+                      isChecked
+                        ? "products-filter-list-item clicked"
+                        : "products-filter-list-item"
+                    }`}
+                    key={id}
                   >
-                    {`${isChecked ? "-" : "+"}`}
-                  </div>
-                </div>
-                <button className="products-filter-list-item-desc-button">
-                  Detalji
-                </button>
-              </div>
-              <ProductInformation />
-            </article>
-          </div>
+                    <img
+                      src={picture}
+                      alt=""
+                      className={`${
+                        isChecked
+                          ? "products-filter-list-item-image clicked"
+                          : "products-filter-list-item-image"
+                      }`}
+                    />
+                    <div className="products-filter-list-item-desc">
+                      <Link
+                        to={`/product/${id}`}
+                        className="products-filter-list-item-desc-title"
+                      >
+                        {name}
+                      </Link>
+                      {gi.length !== 0 && (
+                        <div
+                          className={`${
+                            isChecked
+                              ? "products-filter-list-item-desc-information clicked"
+                              : "products-filter-list-item-desc-information"
+                          }`}
+                        >
+                          {gi.map((i) => {
+                            return (
+                              <span
+                                key={i.id}
+                                className="products-filter-list-item-desc-information-text odd"
+                              >
+                                {i.name}: {i.data}
+                              </span>
+                            );
+                          })}
+                          {/* OVDE UBACI PRODUCT INFORMATION */}
+                        </div>
+                      )}
+                      <div className="products-filter-list-item-desc-separator">
+                        <div className="products-filter-list-item-desc-line"></div>
+                        <div
+                          className="products-filter-list-item-desc-circle"
+                          onClick={(e) => setIsChecked(!isChecked)}
+                        >
+                          {`${isChecked ? "-" : "+"}`}
+                        </div>
+                      </div>
+                      <button className="products-filter-list-item-desc-button">
+                        Detalji
+                      </button>
+                    </div>
+                    <ProductInformation />
+                  </article>
+                );
+              })}
+            </div>
+          )}
         </div>
       </div>
     </div>

@@ -45,6 +45,7 @@
 }
 
 .parts-show-item-title{
+    text-decoration: none;
     font-size: 23px;
     font-weight: 600;
     align-self: flex-start;
@@ -63,10 +64,19 @@
     font-weight: 450;
     font-size: 17px;
     color: #111;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+}
+
+.parts-show-item-description-link{
+    text-decoration: none;
 }
 
 .parts-show-item-image{
-    flex: 1;
+    height: 100%;
+    width: 50%;
 }
 
 .parts-show-item-separator{

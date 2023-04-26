@@ -45,7 +45,7 @@ const AdminVehicle = () => {
     );
     const engineId = engineRef.current.value;
     await axios.post(
-      `https://localhost:7236/ConteinEngine/InputEngine/${data}/${engineId}`
+      `https://localhost:7236/VehicleContainEngine/InputEngine/${data}/${engineId}`
     );
     const newCreatedVehicle = { ...newVehicle, id: data };
     setVehicles([...vehicles, newCreatedVehicle]);

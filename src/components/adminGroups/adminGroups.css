@@ -37,3 +37,8 @@
     top: 0px;
 }
 
+.admin-users-gi-list{
+    display: flex;
+    flex-direction: column;
+}
+

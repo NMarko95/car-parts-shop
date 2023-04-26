@@ -1,5 +1,5 @@
 import "./adminGroups.css";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import CreateIcon from "@mui/icons-material/Create";
 import DeleteIcon from "@mui/icons-material/Delete";
 import axios from "axios";
@@ -10,6 +10,7 @@ const AdminGroups = () => {
     picture: "",
     details: "",
     subCategories: [],
+    has_vehicle: false,
   };
 
   let dataEntries = [
@@ -25,13 +26,23 @@ const AdminGroups = () => {
       name: "OPIS:",
       value: "details",
     },
+    {
+      name: "POTREBNO VOZILO:",
+      value: "has_Vehicle",
+    },
   ];
+
+  const baseURL = "https://localhost:7236";
 
   const [newCategory, setNewCategory] = useState(emptyCategory);
   const [categories, setCategories] = useState([]);
   const [subCategories, setSubCategories] = useState([]);
   const [isAdding, setIsAdding] = useState(false);
   const [isUpdate, setIsUpdate] = useState(false);
+  const [selectedGroup, setSelectedGroup] = useState(null);
+  const [groupInformation, setGroupInformation] = useState([]);
+
+  const giRef = useRef();
 
   const handleAdd = async () => {
     const newSubCategories = newCategory.subCategories.map((sc) => {
@@ -41,8 +52,10 @@ const AdminGroups = () => {
       "https://localhost:7236/Group/InputGroup",
       newCategory
     );
+    // group information api call
+    // group ifnromation data api call
     await axios.post(
-      `https://localhost:7236/BelongCategory/InputSubCategory/${data}`,
+      `https://localhost:7236/GroupBelongSubCategory/InputSubCategory/${data}`,
       newSubCategories
     );
     const newCreatedSubCategory = { ...newCategory, id: data };
@@ -129,22 +142,48 @@ const AdminGroups = () => {
     setCategories(newCategories);
   };
 
+  const handleAddGi = async () => {
+    const gi = {
+      name: giRef.current.value,
+    };
+    const { data } = await axios.post(
+      `${baseURL}/GroupInformation/InputGroupInformation/${selectedGroup.id}`,
+      gi
+    );
+    const newGi = {
+      id: data,
+      name: gi.name,
+    };
+    giRef.current.value = "";
+    setGroupInformation([...groupInformation, newGi]);
+  };
+
   useEffect(() => {
     const getCategories = async () => {
       const { data } = await axios.get(
-        "https://localhost:7236/SubCategory/GetSubCategories"
+        `${baseURL}/SubCategory/GetSubCategories`
       );
       setCategories(data);
     };
     const getGroups = async () => {
-      const { data } = await axios.get(
-        "https://localhost:7236/Group/GetGroups"
-      );
+      const { data } = await axios.get(`${baseURL}/Group/GetGroups`);
       setSubCategories(data);
     };
     getCategories();
     getGroups();
   }, []);
+
+  useEffect(() => {
+    const getGi = async () => {
+      if (selectedGroup !== null) {
+        const { data } = await axios.get(
+          `${baseURL}/GroupInformation/GetGroupInformations/${selectedGroup.id}`
+        );
+        setGroupInformation(data);
+      }
+    };
+    getGi();
+  }, [selectedGroup]);
 
   return (
     <>
@@ -208,11 +247,22 @@ const AdminGroups = () => {
                   <h5 className="admin-users-input-title">{name}</h5>
                   <input
                     name={value}
-                    type={value === "picture" ? "file" : "text"}
+                    type={
+                      value === "picture"
+                        ? "file"
+                        : value === "has_Vehicle"
+                        ? "checkbox"
+                        : "text"
+                    }
                     className="admin-users-input-box"
                     onChange={(e) =>
                       value === "picture"
                         ? handleUploadFile(e)
+                        : value === "has_Vehicle"
+                        ? setNewCategory({
+                            ...newCategory,
+                            [value]: e.target.checked,
+                          })
                         : setNewCategory({
                             ...newCategory,
                             [value]: e.target.value,
@@ -240,10 +290,14 @@ const AdminGroups = () => {
           <div className="admin-users-main-item">Detalji</div>
         </div>
         {subCategories.length !== 0 &&
-          subCategories.map((user) => {
-            const { id, name, details, picture } = user;
+          subCategories.map((group) => {
+            const { id, name, details, picture } = group;
             return (
-              <div className="admin-users-main-row" key={id}>
+              <div
+                className="admin-users-main-row"
+                key={id}
+                onClick={(e) => setSelectedGroup(group)}
+              >
                 <div className="admin-users-main-item">{id}</div>
                 <div className="admin-users-main-item">{name}</div>
                 <div className="admin-users-main-item">{details}</div>
@@ -269,6 +323,27 @@ const AdminGroups = () => {
             );
           })}
       </div>
+      {selectedGroup && (
+        <div className="admin-users-group-information">
+          <h4>{selectedGroup.name}</h4>
+          {groupInformation.length !== 0 && (
+            <div className="admin-users-gi-list">
+              {groupInformation.map((gi) => {
+                const { id, name } = gi;
+                return (
+                  <span key={id} className="admin-users-gi-list-item">
+                    {name}
+                  </span>
+                );
+              })}
+            </div>
+          )}
+          <div className="admin-users-gi-add">
+            <input ref={giRef} />
+            <button onClick={handleAddGi}>Dodaj</button>
+          </div>
+        </div>
+      )}
       {isUpdate && (
         <div className="admin-users-update">
           <div className="admin-users-update-wrapper">

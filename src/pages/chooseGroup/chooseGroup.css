@@ -107,7 +107,7 @@
 .choose-group-select-item-image{
     height: 100px;
     width: 100px;
-    object-fit: cover;
+    object-fit: contain;
 }
 
 .choose-group-select-item-title{

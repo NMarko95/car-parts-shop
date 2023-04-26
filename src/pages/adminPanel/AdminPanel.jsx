@@ -6,52 +6,35 @@ import AdminSubcategories from "../../components/adminSubcategories/AdminSubcate
 import AdminGroups from "../../components/adminGroups/AdminGroups";
 import AdminEngine from "../../components/adminEngine/AdminEngine";
 import AdminVehicle from "../../components/adminVehicle/AdminVehicle";
+import AdminProduct from "../../components/adminProduct/AdminProduct";
 
 const AdminPanel = () => {
   const [current, setCurrent] = useState("Users");
 
-  const tabs = [];
+  const tabs = [
+    "Users",
+    "Categories",
+    "Subcategories",
+    "Engines",
+    "Groups",
+    "Vehicles",
+    "Products",
+  ];
 
   return (
     <div className="admin-panel">
-      {}
       <div className="admin-panel-asside">
-        <div
-          className="admin-panel-asside-item"
-          onClick={(e) => setCurrent(e.target.innerHTML)}
-        >
-          <span>Users</span>
-        </div>
-        <div
-          className="admin-panel-asside-item"
-          onClick={(e) => setCurrent(e.target.innerHTML)}
-        >
-          <span>Categories</span>
-        </div>
-        <div
-          className="admin-panel-asside-item"
-          onClick={(e) => setCurrent(e.target.innerHTML)}
-        >
-          <span>SubCategories</span>
-        </div>
-        <div
-          className="admin-panel-asside-item"
-          onClick={(e) => setCurrent(e.target.innerHTML)}
-        >
-          <span>Engines</span>
-        </div>
-        <div
-          className="admin-panel-asside-item"
-          onClick={(e) => setCurrent(e.target.innerHTML)}
-        >
-          <span>Groups</span>
-        </div>
-        <div
-          className="admin-panel-asside-item"
-          onClick={(e) => setCurrent(e.target.innerHTML)}
-        >
-          <span>Vehicles</span>
-        </div>
+        {tabs.map((tab, index) => {
+          return (
+            <div
+              className="admin-panel-asside-item"
+              key={index}
+              onClick={(e) => setCurrent(tab)}
+            >
+              <span>{tab}</span>
+            </div>
+          );
+        })}
       </div>
       <div className="admin-panel-main">
         {current === "Users" ? (
@@ -64,8 +47,10 @@ const AdminPanel = () => {
           <AdminGroups />
         ) : current === "Engines" ? (
           <AdminEngine name={current} />
-        ) : (
+        ) : current === "Vehicles" ? (
           <AdminVehicle />
+        ) : (
+          <AdminProduct />
         )}
       </div>
     </div>

@@ -6,7 +6,7 @@ const SelectNavbar = () => {
     "Svi delovi",
     "Gume",
     "Akumulatori",
-    "Ulje i tecnosti",
+    "Ulja i tecnosti",
     "Univerzalni delovi",
     "Alati i oprema",
   ];
