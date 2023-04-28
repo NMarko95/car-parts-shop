@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import PartsShow from "../../components/partsShow/PartsShow";
 import "./homepage.css";
 import axios from "axios";
-
 const Homepage = () => {
   const [subcategories, setSubcategories] = useState([]);
 

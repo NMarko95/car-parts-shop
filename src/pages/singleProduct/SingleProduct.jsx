@@ -13,76 +13,6 @@ const SingleProduct = () => {
     "https://automarket.blob.core.windows.net/articleimagesplus-prod/be894434-43d6-45b6-bc76-2d24c170de2a",
     "https://automarket.blob.core.windows.net/articleimagesplus-prod/7c9e68ed-9ebe-424d-811c-d100bfd4dcbd",
   ];
-  const fakeInfo = [
-    {
-      name: "Tehnička informacija broj:",
-      value: "15W40",
-    },
-    {
-      name: "Tehnička informacija broj:",
-      value: "15W40",
-    },
-    {
-      name: "Tehnička informacija broj:",
-      value: "15W40",
-    },
-    {
-      name: "Tehnička informacija broj:",
-      value: "15W40",
-    },
-    {
-      name: "Tehnička informacija broj:",
-      value: "15W40",
-    },
-    {
-      name: "Tehnička informacija broj:",
-      value: "15W40",
-    },
-    {
-      name: "Tehnička informacija broj:",
-      value: "15W40",
-    },
-    {
-      name: "Tehnička informacija broj:",
-      value: "15W40",
-    },
-    {
-      name: "Tehnička informacija broj:",
-      value: "15W40",
-    },
-    {
-      name: "Tehnička informacija broj:",
-      value: "15W40",
-    },
-    {
-      name: "Tehnička informacija broj:",
-      value: "15W40",
-    },
-    {
-      name: "Tehnička informacija broj:",
-      value: "15W40",
-    },
-    {
-      name: "Tehnička informacija broj:",
-      value: "15W40",
-    },
-    {
-      name: "Tehnička informacija broj:",
-      value: "15W40",
-    },
-    {
-      name: "Tehnička informacija broj:",
-      value: "15W40",
-    },
-    {
-      name: "Tehnička informacija broj:",
-      value: "15W40",
-    },
-    {
-      name: "Tehnička informacija broj:",
-      value: "15W40",
-    },
-  ];
 
   const { pid } = useParams();
 
@@ -125,7 +55,6 @@ const SingleProduct = () => {
       );
       const info = [...gi, ...pi];
       const newProduct = { ...data, information: info };
-      console.log(newProduct);
       setProduct(newProduct);
     };
     getpRoduct();
@@ -155,7 +84,10 @@ const SingleProduct = () => {
             <h3 className="single-product-middle-title">{product.name}</h3>
           </div>
           <div className="single-product-right">
-            <ProductInformation />
+            <ProductInformation
+              quantity={product.quantity}
+              price={product.price}
+            />
             <div className="single-product-right-counter">
               <div
                 className="single-product-right-counter-opp"

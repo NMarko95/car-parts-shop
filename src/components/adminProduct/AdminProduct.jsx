@@ -62,23 +62,24 @@ const AdminProduct = () => {
     // creating groupInformationData
     const inputs = document.querySelectorAll(".product-add-information-input");
     const groupInformations = [];
-    inputs.forEach((input, index) => {
-      groupInformations.push({
-        data: input.value,
-        group_id: parseInt(selectedGroup),
-        groupInformation_id: groupInformation[index].id,
-      });
-    });
     // adding product
     let newProduct = {
       ...product,
       quantity: parseInt(product.quantity),
-      price: parseInt(product.price),
+      price: parseFloat(product.price),
     };
     const { data } = await axios.post(
       `${baseURL}/Product/InputProduct`,
       newProduct
     );
+    inputs.forEach((input, index) => {
+      groupInformations.push({
+        data: input.value,
+        group_id: parseInt(selectedGroup),
+        groupInformation_id: groupInformation[index].id,
+        product_id: data,
+      });
+    });
     newProduct = { ...newProduct, id: data };
     setProducts([...products, newProduct]);
     await Promise.all(

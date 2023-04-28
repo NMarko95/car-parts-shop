@@ -342,6 +342,7 @@
 }
 
 .products-filter-list-item-desc-button{
+    text-decoration: none;
     padding: 10px 50px;
     border: 1px solid #514f4f;
     color: #514f4f;

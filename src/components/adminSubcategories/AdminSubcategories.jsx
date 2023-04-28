@@ -41,10 +41,10 @@ const AdminSubcategories = () => {
       "https://localhost:7236/SubCategory/InputSubCategory",
       newCategory
     );
-    await axios.post(
+    /*await axios.post(
       `https://localhost:7236/FindCategory/InputSubCategory/${data}`,
       newSubCategories
-    );
+    );*/
     const newCreatedSubCategory = { ...newCategory, id: data };
     setSubCategories([...subCategories, newCreatedSubCategory]);
     setNewCategory(emptyCategory);

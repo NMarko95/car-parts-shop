@@ -6,6 +6,7 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import MiniCart from "../miniCart/MiniCart";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const [isDisplayed, setIsDisplayed] = useState(false);
@@ -13,7 +14,9 @@ const Navbar = () => {
   return (
     <div className="navbar">
       <div className="navbar-logo">
-        <span>PRODAJA DELOVA</span>
+        <Link style={{ textDecoration: "none" }} to="/">
+          PRODAJA DELOVA
+        </Link>
       </div>
       <div className="navbar-options">
         <div className="navbar-search">

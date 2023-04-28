@@ -10,7 +10,7 @@ import axios from "axios";
 import { useParams, Link } from "react-router-dom";
 
 const Products = () => {
-  const { gid } = useParams();
+  const { gid, gname } = useParams();
 
   const [isClicked, setIsClicked] = useState({
     index: "",
@@ -18,10 +18,7 @@ const Products = () => {
   });
   const [isChecked, setIsChecked] = useState(false);
   const [products, setProducts] = useState([]);
-  const [information, setInformation] = useState([]);
-  const [groupInfoLength, setGroupInfoLength] = useState(0);
-
-  const fakeData = ["Viskoznost", "Proizvodjac", "Zapremina"];
+  const [gidCount, setGidCount] = useState([]);
 
   const iconStyles = {
     height: "25px",
@@ -34,12 +31,21 @@ const Products = () => {
 
   useEffect(() => {
     const getProducts = async () => {
-      const { data } = await axios.get(`${baseURL}/Product/GetProduct/${gid}`);
+      let newGid = gid;
+      if (gid === undefined) {
+        const { data } = await axios.get(
+          `${baseURL}/Group/GetGroupName/${gname}`
+        );
+        newGid = data.id;
+      }
+      const { data } = await axios.get(
+        `${baseURL}/Product/GetProduct/${newGid}/Podrazumevano`
+      );
       if (data.length !== 0) {
         const response = await Promise.all(
           data.map((p) => {
             return axios.get(
-              `${baseURL}/GroupInformationData/GetGroupInformationData/${gid}/${p.id}`
+              `${baseURL}/GroupInformationData/GetGroupInformationData/${newGid}/${p.id}`
             );
           })
         );
@@ -50,100 +56,158 @@ const Products = () => {
       }
     };
     getProducts();
-  }, [gid]);
+  }, [gid, gname]);
 
   console.log(products);
 
+  useEffect(() => {
+    const getGidCount = async () => {
+      if (products.length !== 0) {
+        let newGid = gid;
+        if (gid === undefined) {
+          const { data } = await axios.get(
+            `${baseURL}/Group/GetGroupName/${gname}`
+          );
+          newGid = data.id;
+        }
+        const responses = await Promise.all(
+          products[0].gi.map((groupInfo) => {
+            return axios.get(
+              `${baseURL}/GroupInformationData/GetGroupInformationDataCount/${newGid}/${groupInfo.id}`
+            );
+          })
+        );
+        const newGidCount = responses.map((r) => {
+          return r.data;
+        });
+        setGidCount(newGidCount);
+      }
+    };
+    getGidCount();
+  }, [products, gid]);
+
+  const handleSort = async (e) => {
+    const sort = e.target.innerHTML;
+    const { data } = await axios.get(
+      `${baseURL}/Product/GetProduct/${gid}/${sort}`
+    );
+    setProducts(data);
+  };
+
+  const handleChangeGi = (e) => {
+    const title = e.target.parentNode.parentNode.querySelector(
+      ".products-search-info-title"
+    );
+    title.innerHTML = e.target.innerHTML;
+    setIsClicked(false);
+  };
+
+  const handleSearchGi = async () => {
+    const gis = document.querySelectorAll(".products-search-info-title");
+    let names = [];
+    let data = [];
+    products[0].gi.map((g, i) => {
+      names[i] = g.name;
+      data[i] = gis[i].innerHTML.split(" ")[0];
+      return g;
+    });
+    const response = await axios.post(`${baseURL}/Product/GetDataProducts`, {
+      names,
+      data,
+    });
+    let newGid = gid;
+    if (gid === undefined) {
+      const { data } = await axios.get(
+        `${baseURL}/Group/GetGroupName/${gname}`
+      );
+      newGid = data.id;
+    }
+    if (response.data.length !== 0) {
+      const responses = await Promise.all(
+        response.data.map((p) => {
+          return axios.get(
+            `${baseURL}/GroupInformationData/GetGroupInformationData/${newGid}/${p.id}`
+          );
+        })
+      );
+      const newResponse = responses.map((r, i) => {
+        return { ...response.data[i], gi: r.data };
+      });
+      setProducts(newResponse);
+    } else setProducts([]);
+    //setProducts(response.data);
+  };
+
   return (
     <div className="products">
-      <div className="products-search">
-        <h3 className="products-search-title">
-          URADITE PRETRAGU ODGOVARAJUCEG ULJA PREKO KARAKTERISTIKA
-        </h3>
-        <div className="products-search-container">
-          {products.length !== 0 &&
-            products[0].gi.map((item, index) => {
-              return (
-                <div className="products-search-info" key={item.id}>
-                  <div
-                    className={
-                      isClicked.value && index === isClicked.index
-                        ? "products-search-info-number clicked"
-                        : "products-search-info-number"
-                    }
-                  >
-                    {index + 1}
-                  </div>
-                  <span
-                    className={
-                      isClicked.value && index === isClicked.index
-                        ? "products-search-info-title clicked"
-                        : "products-search-info-title"
-                    }
-                  >
-                    {item.name}
-                  </span>
-                  <KeyboardArrowDownIcon
-                    onClick={(e) => {
-                      setIsClicked({
-                        index,
-                        value: !isClicked.value,
-                      });
-                    }}
-                    style={
-                      isClicked.value && index === isClicked.index
-                        ? { ...iconStyles, color: "#f37122" }
-                        : iconStyles
-                    }
-                    className="products-search-arrow"
-                  />
-                  {isClicked.value && index === isClicked.index && (
-                    <div className="products-search-info-select">
-                      <input className="products-search-info-select-input" />
-                      <span className="products-search-info-select-text">
-                        asdasd
-                      </span>
-                      <span className="products-search-info-select-text">
-                        12qweqw3123
-                      </span>
-                      <span className="products-search-info-select-text">
-                        zcvzcv
-                      </span>
-                      <span className="products-search-info-select-text">
-                        jrrfthdfg
-                      </span>
-                      <span className="products-search-info-select-text">
-                        123sdfdsf123
-                      </span>
-                      <span className="products-search-info-select-text">
-                        qqqqet
-                      </span>
-                      <span className="products-search-info-select-text">
-                        123123
-                      </span>
-                      <span className="products-search-info-select-text">
-                        123123
-                      </span>
-                      <span className="products-search-info-select-text">
-                        123123
-                      </span>
-                      <span className="products-search-info-select-text">
-                        123123
-                      </span>
-                      <span className="products-search-info-select-text">
-                        123123
-                      </span>
-                      <span className="products-search-info-select-text">
-                        123123
-                      </span>
+      {products.length !== 0 && products[0]?.gi?.length !== 0 && (
+        <div className="products-search">
+          <h3 className="products-search-title">
+            URADITE PRETRAGU PREKO KARAKTERISTIKA
+          </h3>
+          <div className="products-search-container">
+            {products.length !== 0 &&
+              products[0].gi.map((item, index) => {
+                return (
+                  <div className="products-search-info" key={item.id}>
+                    <div
+                      className={
+                        isClicked.value && index === isClicked.index
+                          ? "products-search-info-number clicked"
+                          : "products-search-info-number"
+                      }
+                    >
+                      {index + 1}
                     </div>
-                  )}
-                </div>
-              );
-            })}
+                    <span
+                      className={
+                        isClicked.value && index === isClicked.index
+                          ? "products-search-info-title clicked"
+                          : "products-search-info-title"
+                      }
+                    >
+                      {item.name}
+                    </span>
+                    <KeyboardArrowDownIcon
+                      onClick={(e) => {
+                        setIsClicked({
+                          index,
+                          value: !isClicked.value,
+                        });
+                      }}
+                      style={
+                        isClicked.value && index === isClicked.index
+                          ? { ...iconStyles, color: "#f37122" }
+                          : iconStyles
+                      }
+                      className="products-search-arrow"
+                    />
+                    {isClicked.value && index === isClicked.index && (
+                      <div className="products-search-info-select">
+                        <input className="products-search-info-select-input" />
+                        {gidCount.length !== 0 &&
+                          gidCount[index].map((gc) => {
+                            return (
+                              <div
+                                className="products-search-info-select-text"
+                                key={`${gc.data} ${gc.count}`}
+                                onClick={(e) => handleChangeGi(e, item.name)}
+                              >
+                                {gc.data} ({gc.count})
+                              </div>
+                            );
+                          })}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+          </div>
+          <button className="products-search-btn" onClick={handleSearchGi}>
+            PRETRAGA
+          </button>
         </div>
-        <button className="products-search-btn">PRETRAGA</button>
-      </div>
+      )}
       <div className="products-separator" />
       <div className="products-filter">
         <div className="products-filter-left">
@@ -187,7 +251,10 @@ const Products = () => {
         <div className="products-filter-right">
           <h2 className="products-filter-title right">
             Sortiraj prema{" "}
-            <select className="products-filter-select sort">
+            <select
+              className="products-filter-select sort"
+              onChange={handleSort}
+            >
               <option>Podrazumevano</option>
               <option>Cena rastuce</option>
               <option>Cena opadajuce</option>
@@ -207,7 +274,7 @@ const Products = () => {
           {products.length !== 0 && (
             <div className="products-filter-list">
               {products.map((p) => {
-                const { id, picture, name, gi } = p;
+                const { id, picture, name, gi, price, quantity } = p;
                 return (
                   <article
                     className={`${
@@ -263,11 +330,14 @@ const Products = () => {
                           {`${isChecked ? "-" : "+"}`}
                         </div>
                       </div>
-                      <button className="products-filter-list-item-desc-button">
+                      <Link
+                        to={`/product/${id}`}
+                        className="products-filter-list-item-desc-button"
+                      >
                         Detalji
-                      </button>
+                      </Link>
                     </div>
-                    <ProductInformation />
+                    <ProductInformation price={price} quantity={quantity} />
                   </article>
                 );
               })}

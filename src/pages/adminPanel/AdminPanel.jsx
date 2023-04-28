@@ -41,7 +41,7 @@ const AdminPanel = () => {
           <AdminUsers />
         ) : current === "Categories" ? (
           <AdminCategories />
-        ) : current === "SubCategories" ? (
+        ) : current === "Subcategories" ? (
           <AdminSubcategories />
         ) : current === "Groups" ? (
           <AdminGroups />

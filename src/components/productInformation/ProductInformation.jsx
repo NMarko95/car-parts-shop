@@ -4,7 +4,7 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 
-const ProductInformation = () => {
+const ProductInformation = ({ price, quantity }) => {
   return (
     <div className="product-information">
       <h4 className="product-information-title">
@@ -16,13 +16,13 @@ const ProductInformation = () => {
       </div>
       <div className="product-information-contact available">
         <CheckCircleIcon />
-        <span>Dostupno</span>
+        <span>{quantity > 0 ? "Dostupno" : "Nedostupno"}</span>
       </div>
       <div className="product-information-price">
         <span className="text">Cena:</span>
         <h3 className="price">
-          <h4>865,</h4>
-          <span>20</span> sa PDV-om
+          <h4>{price},</h4>
+          <span>00</span> sa PDV-om
         </h3>
       </div>
       <button className="product-information-btn cart-btn">

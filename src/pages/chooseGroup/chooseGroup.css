@@ -22,7 +22,7 @@
 .choose-group-header-image{
     height: 150px;
     width: 200px;
-    object-fit: cover;
+    object-fit: contain;
 }
 
 .choose-group-header-info{
@@ -102,6 +102,7 @@
     border: 1px solid #6a6868;
     cursor: pointer;
     border-radius: 5px;
+    text-decoration: none;
 }
 
 .choose-group-select-item-image{

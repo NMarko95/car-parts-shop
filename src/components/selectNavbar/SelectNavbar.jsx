@@ -1,25 +1,48 @@
+import { Link } from "react-router-dom";
 import "./selectNavbar.css";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 
 const SelectNavbar = () => {
   const dateEntries = [
-    "Svi delovi",
-    "Gume",
-    "Akumulatori",
-    "Ulja i tecnosti",
-    "Univerzalni delovi",
-    "Alati i oprema",
+    {
+      name: "Svi delovi",
+      tag: "category",
+    },
+    {
+      name: "Akumulatori",
+      tag: "group",
+    },
+    {
+      name: "Gume",
+      tag: "group",
+    },
+    {
+      name: "Ulja i tecnosti",
+      tag: "subcategory",
+    },
+    {
+      name: "Univerzalni delovi",
+      tag: "category",
+    },
+    {
+      name: "Alati i oprema",
+      tag: "category",
+    },
   ];
 
   return (
     <div className="select-navbar">
       {dateEntries.map((de, i) => {
         return (
-          <div className="select-navbar-item" key={i}>
+          <Link
+            className="select-navbar-item"
+            key={i}
+            to={`/products-name/${de.name}`}
+          >
             <LocalShippingIcon style={{ color: "#f37122", fontSize: "24px" }} />
-            <span>{de}</span>
+            <span>{de.name}</span>
             <div id="hover" />
-          </div>
+          </Link>
         );
       })}
     </div>
