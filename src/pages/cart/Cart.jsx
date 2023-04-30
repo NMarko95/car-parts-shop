@@ -2,9 +2,10 @@ import "./cart.css";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import AssignmentTurnedInIcon from "@mui/icons-material/AssignmentTurnedIn";
 import SellIcon from "@mui/icons-material/Sell";
+import { useGlobalContext } from "../../context/Context";
 
 const Cart = () => {
-  const items = [
+  /*const items = [
     {
       title: "MOBIL - 150866 - Ulje za motor (Hemijski proizvodi)",
       img: "https://automarket.blob.core.windows.net/articleimages2223/24974adb-b870-4db6-95bd-eb72829adeff",
@@ -23,11 +24,13 @@ const Cart = () => {
       price: 500,
       quantity: 3,
     },
-  ];
+  ];*/
+
+  const { cart, setCart } = useGlobalContext();
 
   const calculateSum = () => {
     let sum = 0;
-    items.forEach((item) => {
+    cart.forEach((item) => {
       const { quantity, price } = item;
       sum += quantity * price;
     });
@@ -39,44 +42,48 @@ const Cart = () => {
   return (
     <div className="cart">
       <h3>Korpa</h3>
-      <span>{items.length} proizvod/a</span>
+      <span>{cart.length} proizvod/a</span>
       <div className="cart-list">
-        {items.map((item, i) => {
-          const { title, img, quantity, price } = item;
-          return (
-            <article className="cart-list-item" key={i}>
-              <div className="cart-list-item-img-container">
-                <img src={img} alt="" className="cart-list-item-img" />
-              </div>
-              <div className="cart-list-item-title">
-                <span>{title}</span>
-              </div>
-              <div className="cart-list-item-delivery">
-                <div className="cart-list-item-delivery-item">
-                  <LocalShippingIcon />
-                  <span>Besplatna dostava iznad 7.000 rsd</span>
+        {cart.length !== 0 ? (
+          cart.map((item, i) => {
+            const { name, picture, quantity, price } = item;
+            return (
+              <article className="cart-list-item" key={i}>
+                <div className="cart-list-item-img-container">
+                  <img src={picture} alt="" className="cart-list-item-img" />
                 </div>
-                <div className="cart-list-item-delivery-item">
-                  <AssignmentTurnedInIcon />
-                  <span>Isporuka narednog dana</span>
+                <div className="cart-list-item-title">
+                  <span>{name}</span>
                 </div>
-                <div className="cart-list-item-delivery-item">
-                  <SellIcon />
-                  <span>Sjajne cene</span>
+                <div className="cart-list-item-delivery">
+                  <div className="cart-list-item-delivery-item">
+                    <LocalShippingIcon />
+                    <span>Besplatna dostava iznad 7.000 rsd</span>
+                  </div>
+                  <div className="cart-list-item-delivery-item">
+                    <AssignmentTurnedInIcon />
+                    <span>Isporuka narednog dana</span>
+                  </div>
+                  <div className="cart-list-item-delivery-item">
+                    <SellIcon />
+                    <span>Sjajne cene</span>
+                  </div>
                 </div>
-              </div>
-              <div className="cart-list-item-info">
-                <span>Cena:</span>
-                <h4>{price} sa PDV-om</h4>
-                <div className="cart-list-item-quantity">{quantity}</div>
-                <div className="cart-list-item-remove">
-                  <input type="checkbox" />
-                  <span>Uklonite</span>
+                <div className="cart-list-item-info">
+                  <span>Cena:</span>
+                  <h4>{price},00 sa PDV-om</h4>
+                  <div className="cart-list-item-quantity">{quantity}</div>
+                  <div className="cart-list-item-remove">
+                    <input type="checkbox" />
+                    <span>Uklonite</span>
+                  </div>
                 </div>
-              </div>
-            </article>
-          );
-        })}
+              </article>
+            );
+          })
+        ) : (
+          <article className="car-list-item">No items in cart</article>
+        )}
       </div>
       <div className="cart-buttons">
         <button className="cart-buttons-btn update">

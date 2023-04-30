@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "./register.css";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
   const [newUser, setNewUser] = useState({
@@ -33,13 +34,14 @@ const Register = () => {
     },
   ];
 
-  const handleRegister = async() => {
-    // izmeni funkciju kad se doda api za registraciju
+  let navigate = useNavigate();
+
+  const handleRegister = async () => {
     const confirmPassword = document.getElementsByName("confirm")[0].value;
-    console.log(confirmPassword);
-    console.log(newUser);
-    await axios.post("https://localhost:7236/User/Register", newUser)
-    console.log("User registered");
+    if (confirmPassword === newUser.password) {
+      await axios.post("https://localhost:7236/User/Register", newUser);
+      return navigate("/login");
+    }
   };
 
   return (

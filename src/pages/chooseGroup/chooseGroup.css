@@ -13,10 +13,10 @@
 .choose-group-header{
     width: 100%;
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     min-height: 350px;
-    gap: 20px;
+    gap: 25px;
 }
 
 .choose-group-header-image{

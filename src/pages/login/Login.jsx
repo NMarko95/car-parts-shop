@@ -1,7 +1,8 @@
 import { useState } from "react";
 import "./login.css";
-import axios from 'axios'
+import axios from "axios";
 import { useGlobalContext } from "../../context/Context";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [loggedUser, setloggedUser] = useState({
@@ -11,7 +12,9 @@ const Login = () => {
     password: "",
   });
 
-  const {setUser} = useGlobalContext()
+  let navigate = useNavigate();
+
+  const { setUser } = useGlobalContext();
 
   let dataEntries = [
     {
@@ -24,12 +27,13 @@ const Login = () => {
     },
   ];
 
-  const handleLogin = async() => {
-    // izmeni funkciju kad se doda api za registraciju
-    const {data} = await axios.post("https://localhost:7236/User/Login", loggedUser);
+  const handleLogin = async () => {
+    const { data } = await axios.post(
+      "https://localhost:7236/User/Login",
+      loggedUser
+    );
     setUser(data);
-    localStorage.setItem("user", JSON.stringify(data));
-    window.location.replace("/")
+    return navigate("/");
   };
 
   return (

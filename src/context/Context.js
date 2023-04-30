@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 
 const AppContext = React.createContext();
 
-const getLocalStorage = (text) => {
+const getFromLocalStorage = (text) => {
   let item = localStorage.getItem(text);
   if (item) {
     return (item = JSON.parse(localStorage.getItem(text)));
@@ -10,16 +10,27 @@ const getLocalStorage = (text) => {
 };
 
 const AppProvider = ({ children }) => {
-  const [user, setUser] = useState(getLocalStorage("user"));
+  const [user, setUser] = useState(getFromLocalStorage("user"));
+  const [cart, setCart] = useState(getFromLocalStorage("cart") || []);
 
   useEffect(() => {
     if (user) {
       localStorage.setItem("user", JSON.stringify(user));
+    } else {
+      localStorage.removeItem("user");
     }
   }, [user]);
 
+  useEffect(() => {
+    if (cart) {
+      localStorage.setItem("cart", JSON.stringify(cart));
+    } else {
+      localStorage.removeItem("cart");
+    }
+  }, [cart]);
+
   return (
-    <AppContext.Provider value={{ user, setUser }}>
+    <AppContext.Provider value={{ user, setUser, cart, setCart }}>
       {children}
     </AppContext.Provider>
   );

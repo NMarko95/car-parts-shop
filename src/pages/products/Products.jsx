@@ -1,10 +1,6 @@
 import { useEffect, useState } from "react";
 import "./products.css";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import HighlightOffIcon from "@mui/icons-material/HighlightOff";
-import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import ProductInformation from "../../components/productInformation/ProductInformation";
 import axios from "axios";
 import { useParams, Link } from "react-router-dom";
@@ -18,6 +14,8 @@ const Products = () => {
   });
   const [isChecked, setIsChecked] = useState(false);
   const [products, setProducts] = useState([]);
+  const [groupInformation, setGroupInformation] = useState([]);
+  //const [productInformation, setProductInformation] = useState([]);
   const [gidCount, setGidCount] = useState([]);
 
   const iconStyles = {
@@ -49,6 +47,16 @@ const Products = () => {
             );
           })
         );
+        // creating groupInformation state
+        let gInfo = [];
+        response[0].data.map((item) => {
+          gInfo.push({
+            name: item.name,
+            id: item.id,
+          });
+          return item;
+        });
+        setGroupInformation(gInfo);
         const newResponse = response.map((r, i) => {
           return { ...data[i], gi: r.data };
         });
@@ -57,8 +65,6 @@ const Products = () => {
     };
     getProducts();
   }, [gid, gname]);
-
-  console.log(products);
 
   useEffect(() => {
     const getGidCount = async () => {
@@ -87,10 +93,11 @@ const Products = () => {
   }, [products, gid]);
 
   const handleSort = async (e) => {
-    const sort = e.target.innerHTML;
+    const sort = e.target.value;
     const { data } = await axios.get(
       `${baseURL}/Product/GetProduct/${gid}/${sort}`
     );
+    console.log(data);
     setProducts(data);
   };
 
@@ -106,9 +113,10 @@ const Products = () => {
     const gis = document.querySelectorAll(".products-search-info-title");
     let names = [];
     let data = [];
-    products[0].gi.map((g, i) => {
+    groupInformation.map((g, i) => {
       names[i] = g.name;
-      data[i] = gis[i].innerHTML.split(" ")[0];
+      data[i] =
+        gis[i].innerHTML === g.name ? "" : gis[i].innerHTML.split(" ")[0];
       return g;
     });
     const response = await axios.post(`${baseURL}/Product/GetDataProducts`, {
@@ -140,74 +148,72 @@ const Products = () => {
 
   return (
     <div className="products">
-      {products.length !== 0 && products[0]?.gi?.length !== 0 && (
-        <div className="products-search">
-          <h3 className="products-search-title">
-            URADITE PRETRAGU PREKO KARAKTERISTIKA
-          </h3>
-          <div className="products-search-container">
-            {products.length !== 0 &&
-              products[0].gi.map((item, index) => {
-                return (
-                  <div className="products-search-info" key={item.id}>
-                    <div
-                      className={
-                        isClicked.value && index === isClicked.index
-                          ? "products-search-info-number clicked"
-                          : "products-search-info-number"
-                      }
-                    >
-                      {index + 1}
-                    </div>
-                    <span
-                      className={
-                        isClicked.value && index === isClicked.index
-                          ? "products-search-info-title clicked"
-                          : "products-search-info-title"
-                      }
-                    >
-                      {item.name}
-                    </span>
-                    <KeyboardArrowDownIcon
-                      onClick={(e) => {
-                        setIsClicked({
-                          index,
-                          value: !isClicked.value,
-                        });
-                      }}
-                      style={
-                        isClicked.value && index === isClicked.index
-                          ? { ...iconStyles, color: "#f37122" }
-                          : iconStyles
-                      }
-                      className="products-search-arrow"
-                    />
-                    {isClicked.value && index === isClicked.index && (
-                      <div className="products-search-info-select">
-                        <input className="products-search-info-select-input" />
-                        {gidCount.length !== 0 &&
-                          gidCount[index].map((gc) => {
-                            return (
-                              <div
-                                className="products-search-info-select-text"
-                                key={`${gc.data} ${gc.count}`}
-                                onClick={(e) => handleChangeGi(e, item.name)}
-                              >
-                                {gc.data} ({gc.count})
-                              </div>
-                            );
-                          })}
-                      </div>
-                    )}
+      <div className="products-search">
+        <h3 className="products-search-title">
+          URADITE PRETRAGU PREKO KARAKTERISTIKA
+        </h3>
+        <div className="products-search-container">
+          {groupInformation.length !== 0 &&
+            groupInformation.map((item, index) => {
+              return (
+                <div className="products-search-info" key={item.id}>
+                  <div
+                    className={
+                      isClicked.value && index === isClicked.index
+                        ? "products-search-info-number clicked"
+                        : "products-search-info-number"
+                    }
+                  >
+                    {index + 1}
                   </div>
-                );
-              })}
-          </div>
-          <button className="products-search-btn" onClick={handleSearchGi}>
-            PRETRAGA
-          </button>
+                  <span
+                    className={
+                      isClicked.value && index === isClicked.index
+                        ? "products-search-info-title clicked"
+                        : "products-search-info-title"
+                    }
+                  >
+                    {item.name}
+                  </span>
+                  <KeyboardArrowDownIcon
+                    onClick={(e) => {
+                      setIsClicked({
+                        index,
+                        value: !isClicked.value,
+                      });
+                    }}
+                    style={
+                      isClicked.value && index === isClicked.index
+                        ? { ...iconStyles, color: "#f37122" }
+                        : iconStyles
+                    }
+                    className="products-search-arrow"
+                  />
+                  {isClicked.value && index === isClicked.index && (
+                    <div className="products-search-info-select">
+                      <input className="products-search-info-select-input" />
+                      {gidCount.length !== 0 &&
+                        gidCount[index].map((gc) => {
+                          return (
+                            <div
+                              className="products-search-info-select-text"
+                              key={`${gc.data} ${gc.count}`}
+                              onClick={(e) => handleChangeGi(e, item.name)}
+                            >
+                              {gc.data} ({gc.count})
+                            </div>
+                          );
+                        })}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
         </div>
-      )}
+        <button className="products-search-btn" onClick={handleSearchGi}>
+          PRETRAGA
+        </button>
+      </div>
       <div className="products-separator" />
       <div className="products-filter">
         <div className="products-filter-left">
@@ -255,11 +261,11 @@ const Products = () => {
               className="products-filter-select sort"
               onChange={handleSort}
             >
-              <option>Podrazumevano</option>
-              <option>Cena rastuce</option>
-              <option>Cena opadajuce</option>
-              <option>Naziv rastuce</option>
-              <option>Naziv opadajuce</option>
+              <option value="Podrazumevano">Podrazumevano</option>
+              <option value="Cena rastuce">Cena rastuce</option>
+              <option value="Cena opadajuce">Cena opadajuce</option>
+              <option value="Naziv rastuce">Naziv rastuce</option>
+              <option value="Naziv opadajuce">Naziv opadajuce</option>
             </select>
             Prikazite{" "}
             <select className="products-filter-select page">
@@ -337,7 +343,7 @@ const Products = () => {
                         Detalji
                       </Link>
                     </div>
-                    <ProductInformation price={price} quantity={quantity} />
+                    <ProductInformation product={p} />
                   </article>
                 );
               })}

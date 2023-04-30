@@ -34,7 +34,19 @@ const router = createBrowserRouter([
         element: <PartsShow />,
       },
       {
-        path: "/choose/:catid/",
+        path: "/choose-category/:catid/",
+        element: <ChooseGroup />,
+      },
+      {
+        path: "/choose-category-name/:catid/",
+        element: <ChooseGroup />,
+      },
+      {
+        path: "/choose-subcategory/:catid/",
+        element: <ChooseGroup />,
+      },
+      {
+        path: "/choose-subcategory-name/:catid/",
         element: <ChooseGroup />,
       },
       {

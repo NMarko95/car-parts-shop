@@ -65,6 +65,29 @@
     cursor: pointer;
 }
 
+.navbar-search-items{
+    position: absolute;
+    top: 60px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    z-index: 100;
+    background-color: #fff;
+    border-radius: 5px;
+}
+
+.navbar-search-item{
+    padding: 5px;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.navbar-search-item:hover{
+    background-color: #182f3f;
+    color: #fff;
+}
+
 .navbar-phonenumber{
     height: 30px;
     width: 13%;
@@ -97,12 +120,40 @@
     align-items: center;
     justify-content: center;
     cursor: pointer;
+    text-decoration: none;
+    position: relative;
 }
 
 .navbar-login > span{
     font-weight: 600;
     font-size: 14px;
     margin-left: 5px;
+}
+
+.navbar-account-menu{
+    position: absolute;
+    top: calc(100% + 10px);
+    z-index: 100;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    background-color: #fff;
+    border-radius: 5px;
+}
+
+.navbar-account-menu-item{
+    text-transform: uppercase;
+    padding: 5px 0;
+    transition: 0.2s ease;
+    width: 100%;
+    text-align: center;
+}
+
+.navbar-account-menu-item:hover{
+    background-color: #182f3f;
+    color: #fff;
 }
 
 .navbar-wishlist{

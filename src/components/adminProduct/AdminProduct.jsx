@@ -165,7 +165,7 @@ const AdminProduct = () => {
 
   const handleUploadFile = (e) => {
     readFileDataAsBase64(e).then((data) => {
-      console.log(data);
+      setProduct({ ...product, picture: data });
       //setProduct({ ...product, picture: data });
     });
   };
