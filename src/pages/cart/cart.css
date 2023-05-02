@@ -71,7 +71,7 @@
 
 .cart-list-item-info{
     width: 25%;
-    height: 60%;
+    height: 100%;
     padding: 0 30px;
     display: flex;
     align-items: flex-start;
@@ -96,17 +96,24 @@
     height: 30px;
     border: 1px solid #b1acac;
     border-radius: 5px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     outline: none;
     font-size: 18px;
+    text-align: center;
 }
 
 .cart-list-item-remove{
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    padding: 5px 20px;
+    background-color: #f37122;
+    color: #fff;
+    border: none;
+    outline: none;
+    transition: 0.3s ease;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.cart-list-item-remove:hover{
+    background-color: #7e3507;
 }
 
 .cart-list-item-remove > input{
@@ -148,6 +155,7 @@
 
 .pdf{
     background-color: #f37122;
+    text-decoration: none;
 }
 
 .pdf:hover{
@@ -173,7 +181,7 @@
     display: flex;
     margin-bottom: 30px;
     background-color: #fff;
-    height: 350px;
+    height: 300px;
     gap: 20px;
 }
 
@@ -189,7 +197,8 @@
 
 .cart-checkout-left-container{
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
+    gap: 20px;
     height: 40px;
     align-items: center;
     width: 100%;
@@ -198,7 +207,7 @@
 }
 
 .cart-checkout-left-container > input{
-    width: 60%;
+    width: 70%;
     height: 30px;
     font-size: 13px;
     padding: 0 10px;
@@ -220,6 +229,14 @@
     display: flex;
     flex-direction: column;
     align-items: flex-end;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.cart-checkout-right-check{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
     gap: 10px;
 }
 
@@ -251,8 +268,16 @@
     margin: 28px 0; /* centriranje */
 }
 
+.cart-checkout-right-buttons{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+}
+
 .cart-checkout-right-accept{
-    height: 30px;
+    height: 40px;
     width: 100%;
     display: flex;
     align-items: center;
@@ -262,7 +287,6 @@
     padding: 0 10px;
     background-color: #182f3f;
     color: #fff;
-    margin-bottom: 10px;
 }
 
 .cart-checkout-right-accept > input{

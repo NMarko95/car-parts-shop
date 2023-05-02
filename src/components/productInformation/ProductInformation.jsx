@@ -5,11 +5,16 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import { useGlobalContext } from "../../context/Context";
 
-const ProductInformation = ({ product }) => {
+const ProductInformation = ({ product, count }) => {
   const { setCart } = useGlobalContext();
 
   const handleAddToCart = () => {
-    setCart((prevCart) => [...prevCart, product]);
+    console.log(count);
+    const newProduct = {
+      ...product,
+      selectedCount: count === undefined ? 1 : count,
+    };
+    setCart((prevCart) => [...prevCart, newProduct]);
   };
 
   return (

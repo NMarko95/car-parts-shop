@@ -9,6 +9,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useGlobalContext } from "../../context/Context";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 const Navbar = () => {
   const baseURL = "https://localhost:7236";
@@ -22,6 +23,8 @@ const Navbar = () => {
   const [searchGroups, setSearchGroups] = useState([]);
 
   const { user, setUser, cart } = useGlobalContext();
+
+  const smallWidth = useMediaQuery("(min-width:350px) and (max-width:750px)");
 
   const handleSearch = async (e) => {
     const searchParameter = e.target.value;
@@ -63,6 +66,40 @@ const Navbar = () => {
         <Link style={{ textDecoration: "none" }} to="/">
           PRODAJA DELOVA
         </Link>
+        {smallWidth && (
+          <div className="navbar-icons">
+            {user === null ? (
+              <Link to="/login" className="navbar-login">
+                <PersonIcon />
+              </Link>
+            ) : (
+              <div className="navbar-login" onClick={handleAccountMenu}>
+                <PersonIcon />
+                {isAccountDisplayed && (
+                  <div className="navbar-account-menu">
+                    <div className="navbar-account-menu-item">Moj nalog</div>
+                    <div
+                      className="navbar-account-menu-item"
+                      onClick={handleLogout}
+                    >
+                      Odjavite se
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+            <div className="navbar-wishlist">
+              <LocalShippingIcon style={{ color: "#182f3f" }} />
+            </div>
+            <div
+              className="navbar-cart"
+              onClick={(e) => setIsDisplayed(!isDisplayed)}
+            >
+              <ShoppingCartIcon style={{ color: "#182f3f" }} />
+              {isDisplayed && <MiniCart />}
+            </div>
+          </div>
+        )}
       </div>
       <div className="navbar-options">
         <div className="navbar-search">
@@ -118,41 +155,51 @@ const Navbar = () => {
               })}
           </div>
         </div>
-        <div className="navbar-phonenumber">
-          <LocalPhoneIcon />
-          <span>060-555-333</span>
-        </div>
-        {user === null ? (
-          <Link to="/login" className="navbar-login">
-            <span>PRIJAVITE SE</span>
-          </Link>
-        ) : (
-          <div className="navbar-login" onClick={handleAccountMenu}>
-            <PersonIcon />
-            {isAccountDisplayed && (
-              <div className="navbar-account-menu">
-                <div className="navbar-account-menu-item">Moj nalog</div>
-                <div
-                  className="navbar-account-menu-item"
-                  onClick={handleLogout}
-                >
-                  Odjavite se
-                </div>
-              </div>
-            )}
+        {!smallWidth && (
+          <div className="navbar-phonenumber">
+            <LocalPhoneIcon />
+            <span>060-555-333</span>
           </div>
         )}
-        <div className="navbar-wishlist">
-          <LocalShippingIcon style={{ color: "#182f3f" }} />
-        </div>
-        <div
-          className="navbar-cart"
-          onClick={(e) => setIsDisplayed(!isDisplayed)}
-        >
-          <ShoppingCartIcon style={{ color: "#182f3f" }} />
-          <span>KORPA</span>
-          {isDisplayed && <MiniCart />}
-        </div>
+        {!smallWidth && (
+          <>
+            {user === null ? (
+              <Link to="/login" className="navbar-login">
+                <span>PRIJAVITE SE</span>
+              </Link>
+            ) : (
+              <div className="navbar-login" onClick={handleAccountMenu}>
+                <PersonIcon />
+                {isAccountDisplayed && (
+                  <div className="navbar-account-menu">
+                    <div className="navbar-account-menu-item">Moj nalog</div>
+                    <div
+                      className="navbar-account-menu-item"
+                      onClick={handleLogout}
+                    >
+                      Odjavite se
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+          </>
+        )}
+        {!smallWidth && (
+          <>
+            <div className="navbar-wishlist">
+              <LocalShippingIcon style={{ color: "#182f3f" }} />
+            </div>
+            <div
+              className="navbar-cart"
+              onClick={(e) => setIsDisplayed(!isDisplayed)}
+            >
+              <ShoppingCartIcon style={{ color: "#182f3f" }} />
+              <span>KORPA</span>
+              {isDisplayed && <MiniCart />}
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

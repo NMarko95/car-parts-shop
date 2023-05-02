@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import "./selectNavbar.css";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 const SelectNavbar = () => {
   const dateEntries = [
@@ -30,6 +31,8 @@ const SelectNavbar = () => {
     },
   ];
 
+  const smallWidth = useMediaQuery("(min-width:350px) and (max-width:750px)");
+
   const makeUrl = (item) => {
     if (item.tag === "group") {
       return `/products-name/${item.name}`;
@@ -46,7 +49,7 @@ const SelectNavbar = () => {
         return (
           <Link className="select-navbar-item" key={i} to={makeUrl(de)}>
             <LocalShippingIcon style={{ color: "#f37122", fontSize: "24px" }} />
-            <span>{de.name}</span>
+            {!smallWidth && <span>{de.name}</span>}
             <div id="hover" />
           </Link>
         );

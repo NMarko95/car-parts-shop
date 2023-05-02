@@ -1,7 +1,6 @@
 .help-hero{
     width: 80%;
     height: 350px;
-    border-radius: 10px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -10,12 +9,9 @@
 }
 
 .help-hero-header{
-    border-radius: 10px 10px 0 0;
     background-color: #f37122;
     color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    text-align: center;
     width: 100%;
     height: 15%;
 }
@@ -102,4 +98,44 @@
 .help-hero-description > span{
     font-size: 14px;
     font-weight: 400;
+}
+
+@media (min-width:350px) and (max-width:750px){
+    .help-hero{
+        width: 100%;
+        height: auto;
+        align-items: center;
+        gap: 10px;
+        margin: 0;
+        padding-bottom: 20px;
+    }
+
+    .help-hero-header{
+        padding: 10px;
+    }
+
+    .help-hero-img{
+        margin: 10px 0;
+        width: 70%;
+        height: 250px;
+    }
+
+    .help-hero-consult{
+        width: 100%;
+        align-items: center;
+    }
+
+    .help-hero-consult-phone, .help-hero-consult-offer{
+        width: 100%;
+        height: 40px;
+    }
+
+    .help-hero-consult-offer > span{
+        font-size: 17px;
+    }
+
+    .help-hero-description{
+        width: 100%;
+        text-align: center;
+    }
 }

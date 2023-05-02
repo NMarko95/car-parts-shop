@@ -8,15 +8,15 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 
 const SingleProduct = () => {
-  const images = [
+  /*const images = [
     "https://automarket.blob.core.windows.net/articleimages2223/7793e96a-afbc-4bb9-992c-584d683c6125",
     "https://automarket.blob.core.windows.net/articleimagesplus-prod/be894434-43d6-45b6-bc76-2d24c170de2a",
     "https://automarket.blob.core.windows.net/articleimagesplus-prod/7c9e68ed-9ebe-424d-811c-d100bfd4dcbd",
-  ];
+  ];*/
 
   const { pid } = useParams();
 
-  const [showImage, setShowImage] = useState(images[0]);
+  //const [showImage, setShowImage] = useState(images[0]);
   const [count, setCount] = useState(1);
   const [specification, setSpecification] = useState(true);
   const [product, setProduct] = useState(null);
@@ -65,8 +65,12 @@ const SingleProduct = () => {
       <div className="product">
         <div className="single-product">
           <div className="single-product-left">
-            <img src={showImage} alt="" className="single-product-left-show" />
-            <div className="single-product-left-all">
+            <img
+              src={product.picture}
+              alt=""
+              className="single-product-left-show"
+            />
+            {/*<div className="single-product-left-all">
               {images.map((image, index) => {
                 return (
                   <img
@@ -78,16 +82,13 @@ const SingleProduct = () => {
                   />
                 );
               })}
-            </div>
+            </div>*/}
           </div>
           <div className="single-product-middle">
             <h3 className="single-product-middle-title">{product.name}</h3>
           </div>
           <div className="single-product-right">
-            <ProductInformation
-              quantity={product.quantity}
-              price={product.price}
-            />
+            <ProductInformation product={product} count={count} />
             <div className="single-product-right-counter">
               <div
                 className="single-product-right-counter-opp"
