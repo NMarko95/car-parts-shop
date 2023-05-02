@@ -1,7 +1,10 @@
 import "./partsShow.css";
 import { Link } from "react-router-dom";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 const PartsShow = ({ subcategories, categories }) => {
+  const smallWidth = useMediaQuery("(min-width:350px) and (max-width:750px)");
+
   return (
     <>
       <div className="parts-show">

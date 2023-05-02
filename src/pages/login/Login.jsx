@@ -2,7 +2,7 @@ import { useState } from "react";
 import "./login.css";
 import axios from "axios";
 import { useGlobalContext } from "../../context/Context";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 const Login = () => {
   const [loggedUser, setloggedUser] = useState({
@@ -62,6 +62,12 @@ const Login = () => {
               </div>
             );
           })}
+        </div>
+        <div className="register-link">
+          Nemate nalog?{" "}
+          <Link to="/register" style={{ textDecoration: "none" }}>
+            Registrujte se
+          </Link>
         </div>
         <button className="login-btn" onClick={handleLogin}>
           Prijavite se

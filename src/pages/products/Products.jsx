@@ -4,6 +4,8 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import ProductInformation from "../../components/productInformation/ProductInformation";
 import axios from "axios";
 import { useParams, Link } from "react-router-dom";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import FilterAltIcon from "@mui/icons-material/FilterAlt";
 
 const Products = () => {
   const { gid, gname } = useParams();
@@ -17,6 +19,9 @@ const Products = () => {
   const [groupInformation, setGroupInformation] = useState([]);
   //const [productInformation, setProductInformation] = useState([]);
   const [gidCount, setGidCount] = useState([]);
+  const [isFiltering, setIsFiltering] = useState(false);
+
+  const smallWidth = useMediaQuery("(min-width:350px) and (max-width:750px)");
 
   const iconStyles = {
     height: "25px",
@@ -146,8 +151,38 @@ const Products = () => {
     //setProducts(response.data);
   };
 
+  const handleFilterToggle = () => {
+    setIsFiltering(!isFiltering);
+  };
+
   return (
     <div className="products">
+      <div
+        className={
+          isFiltering
+            ? "products-filter-submenu show-menu"
+            : "products-filter-submenu"
+        }
+      >
+        <button
+          onClick={handleFilterToggle}
+          className="products-filter-submenu-exit"
+        >
+          x
+        </button>
+        <div className="products-filter-content">
+          <h2 className="products-filter-title">Dostupnost</h2>
+          <div className="products-filter-separator" />
+          <div className="products-filter-item">
+            <input type="checkbox" className="products-filter-checkbox" />
+            <div className="products-filter-item-text">NEDOSTUPNO</div>
+          </div>
+          <div className="products-filter-item">
+            <input type="checkbox" className="products-filter-checkbox" />
+            <div className="products-filter-item-text">DOSTUPNO</div>
+          </div>
+        </div>
+      </div>
       <div className="products-search">
         <h3 className="products-search-title">
           URADITE PRETRAGU PREKO KARAKTERISTIKA
@@ -216,44 +251,53 @@ const Products = () => {
       </div>
       <div className="products-separator" />
       <div className="products-filter">
-        <div className="products-filter-left">
-          <div className="products-filter-content">
-            <h2 className="products-filter-title">Dostupnost</h2>
-            <div className="products-filter-separator" />
-            <div className="products-filter-item">
-              <input type="checkbox" className="products-filter-checkbox" />
-              <div className="products-filter-item-text">NEDOSTUPNO</div>
+        {!smallWidth ? (
+          <div className="products-filter-left">
+            <div className="products-filter-content">
+              <h2 className="products-filter-title">Dostupnost</h2>
+              <div className="products-filter-separator" />
+              <div className="products-filter-item">
+                <input type="checkbox" className="products-filter-checkbox" />
+                <div className="products-filter-item-text">NEDOSTUPNO</div>
+              </div>
+              <div className="products-filter-item">
+                <input type="checkbox" className="products-filter-checkbox" />
+                <div className="products-filter-item-text">DOSTUPNO</div>
+              </div>
             </div>
-            <div className="products-filter-item">
-              <input type="checkbox" className="products-filter-checkbox" />
-              <div className="products-filter-item-text">DOSTUPNO</div>
+            <div className="products-filter-content">
+              <h2 className="products-filter-title">Proizvodjac</h2>
+              <div className="products-filter-separator" />
+              <div className="products-filter-item">
+                <input type="checkbox" className="products-filter-checkbox" />
+                <div className="products-filter-item-text">BELL</div>
+              </div>
+              <div className="products-filter-item">
+                <input type="checkbox" className="products-filter-checkbox" />
+                <div className="products-filter-item-text">FEBI BILSTEIN</div>
+              </div>
+              <div className="products-filter-item">
+                <input type="checkbox" className="products-filter-checkbox" />
+                <div className="products-filter-item-text">MOBIL</div>
+              </div>
+              <div className="products-filter-item">
+                <input type="checkbox" className="products-filter-checkbox" />
+                <div className="products-filter-item-text">MOTUL</div>
+              </div>
+              <div className="products-filter-item">
+                <input type="checkbox" className="products-filter-checkbox" />
+                <div className="products-filter-item-text">NISOTEC</div>
+              </div>
             </div>
           </div>
-          <div className="products-filter-content">
-            <h2 className="products-filter-title">Proizvodjac</h2>
-            <div className="products-filter-separator" />
-            <div className="products-filter-item">
-              <input type="checkbox" className="products-filter-checkbox" />
-              <div className="products-filter-item-text">BELL</div>
-            </div>
-            <div className="products-filter-item">
-              <input type="checkbox" className="products-filter-checkbox" />
-              <div className="products-filter-item-text">FEBI BILSTEIN</div>
-            </div>
-            <div className="products-filter-item">
-              <input type="checkbox" className="products-filter-checkbox" />
-              <div className="products-filter-item-text">MOBIL</div>
-            </div>
-            <div className="products-filter-item">
-              <input type="checkbox" className="products-filter-checkbox" />
-              <div className="products-filter-item-text">MOTUL</div>
-            </div>
-            <div className="products-filter-item">
-              <input type="checkbox" className="products-filter-checkbox" />
-              <div className="products-filter-item-text">NISOTEC</div>
-            </div>
-          </div>
-        </div>
+        ) : (
+          <button
+            className="products-filter-submenu-btn"
+            onClick={handleFilterToggle}
+          >
+            FILTERI <FilterAltIcon style={{ marginTop: "2px" }} />
+          </button>
+        )}
         <div className="products-filter-right">
           <h2 className="products-filter-title right">
             Sortiraj prema{" "}

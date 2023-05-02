@@ -45,6 +45,6 @@
     }
 
     .select-navbar-item{
-        flex: 1;
+        width: 15%;
     }
 }

@@ -41,6 +41,10 @@ const Navbar = () => {
         `${baseURL}/Group/SearchGroup/${searchParameter}`
       );
       if (response.data !== []) setSearchGroups(response.data);
+    } else {
+      setSearchCategories([]);
+      setSearchSubcategories([]);
+      setSearchGroups([]);
     }
   };
 
@@ -49,6 +53,10 @@ const Navbar = () => {
     if (item !== undefined) {
       return navigate(`/choose-category/${item.id}`);
     }
+  };
+
+  const handleNavigateCart = () => {
+    return navigate("/cart");
   };
 
   const handleAccountMenu = () => {
@@ -93,7 +101,11 @@ const Navbar = () => {
             </div>
             <div
               className="navbar-cart"
-              onClick={(e) => setIsDisplayed(!isDisplayed)}
+              onClick={(e) =>
+                !smallWidth
+                  ? setIsDisplayed(!isDisplayed)
+                  : handleNavigateCart()
+              }
             >
               <ShoppingCartIcon style={{ color: "#182f3f" }} />
               {isDisplayed && <MiniCart />}

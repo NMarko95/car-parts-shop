@@ -113,3 +113,13 @@
 .parts-show-btn:hover{
     border: none;
 }
+
+@media (min-width:350px) and (max-width:750px){
+    .parts-show-list{
+        width: 90%;
+    }
+
+    .parts-show-item{
+        width: 100%;
+    }
+}

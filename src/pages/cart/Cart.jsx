@@ -5,11 +5,14 @@ import SellIcon from "@mui/icons-material/Sell";
 import { useGlobalContext } from "../../context/Context";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import Pdf from "../../utilities/Pdf";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 const Cart = () => {
   const { cart, setCart } = useGlobalContext();
 
   const delivery = 360;
+
+  const smallWidth = useMediaQuery("(min-width:350px) and (max-width:750px)");
 
   const calculateSum = () => {
     let sum = 0;
@@ -55,20 +58,22 @@ const Cart = () => {
                 <div className="cart-list-item-title">
                   <span>{name}</span>
                 </div>
-                <div className="cart-list-item-delivery">
-                  <div className="cart-list-item-delivery-item">
-                    <LocalShippingIcon />
-                    <span>Besplatna dostava iznad 7.000 rsd</span>
+                {!smallWidth && (
+                  <div className="cart-list-item-delivery">
+                    <div className="cart-list-item-delivery-item">
+                      <LocalShippingIcon />
+                      <span>Besplatna dostava iznad 7.000 rsd</span>
+                    </div>
+                    <div className="cart-list-item-delivery-item">
+                      <AssignmentTurnedInIcon />
+                      <span>Isporuka narednog dana</span>
+                    </div>
+                    <div className="cart-list-item-delivery-item">
+                      <SellIcon />
+                      <span>Sjajne cene</span>
+                    </div>
                   </div>
-                  <div className="cart-list-item-delivery-item">
-                    <AssignmentTurnedInIcon />
-                    <span>Isporuka narednog dana</span>
-                  </div>
-                  <div className="cart-list-item-delivery-item">
-                    <SellIcon />
-                    <span>Sjajne cene</span>
-                  </div>
-                </div>
+                )}
                 <div className="cart-list-item-info">
                   <span>Cena:</span>
                   <h4>{price},00 sa PDV-om</h4>
@@ -89,7 +94,7 @@ const Cart = () => {
             );
           })
         ) : (
-          <article className="car-list-item">No items in cart</article>
+          <article className="car-list-item">Nemate artikle u korpi.</article>
         )}
       </div>
       {cart.length !== 0 && (

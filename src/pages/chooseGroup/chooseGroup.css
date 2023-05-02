@@ -70,12 +70,13 @@
     gap: 20px;
 }
 
-.choose-group-list > span{
+.choose-group-list-header{
     font-size: 25px;
     color: #6a6868;
     font-weight: 400;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
+    gap: 20px;
 }
 
 .choose-group-list > span > h3{
@@ -115,4 +116,32 @@
     color: #182f3f;
     font-size: 20px;
     font-weight: 500;
+    flex: 1;
+    padding: 0 10px;
+}
+
+@media (min-width:350px) and (max-width:750px){
+    .choose-group{
+        padding: 0;
+        gap: 50px;
+    }
+
+    .choose-group-header{
+        flex-direction: column;
+    }
+
+    .choose-group-list-header{
+        flex-direction: column;
+        width: 100%;
+        gap: 5px;
+    }
+
+    .choose-group-select{
+        margin: 20px 0;
+        flex-direction: column;
+    }
+
+    .choose-group-select-item{
+        width: 100%;
+    }
 }

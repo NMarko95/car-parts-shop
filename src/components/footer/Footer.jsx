@@ -6,12 +6,15 @@ import SendIcon from "@mui/icons-material/Send";
 import PlayCircleFilledOutlinedIcon from "@mui/icons-material/PlayCircleFilledOutlined";
 import FacebookOutlinedIcon from "@mui/icons-material/FacebookOutlined";
 import CameraAltRoundedIcon from "@mui/icons-material/CameraAltRounded";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 const Footer = () => {
   const iconStyles = {
     color: "#182f3f",
     cursor: "pointer",
   };
+
+  const smallWidth = useMediaQuery("(min-width:350px) and (max-width:750px)");
 
   return (
     <div className="footer">

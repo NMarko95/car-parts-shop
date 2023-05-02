@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./register.css";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 const Register = () => {
   const [newUser, setNewUser] = useState({
@@ -47,7 +47,7 @@ const Register = () => {
   return (
     <div className="register">
       <div className="register-wrapper">
-        <h3>VASI LICNI PODACI</h3>
+        <h3>UNESITE PODATKE VASEG NALOGA</h3>
         <div className="register-form">
           {/* informations about user */}
           {dataEntries.map((entry, index) => {
@@ -74,6 +74,12 @@ const Register = () => {
         <div className="register-terms">
           <input type="checkbox" />
           <span>Prihvatam uslove zastite privatnosti</span>
+        </div>
+        <div className="login-link">
+          Vec imate nalog?{" "}
+          <Link to="/login" style={{ textDecoration: "none" }}>
+            Prijavite se
+          </Link>
         </div>
         <button className="register-btn" onClick={handleRegister}>
           Registrujte se
