@@ -182,6 +182,30 @@ const Products = () => {
             <div className="products-filter-item-text">DOSTUPNO</div>
           </div>
         </div>
+        <div className="products-filter-content">
+          <h2 className="products-filter-title">Proizvodjac</h2>
+          <div className="products-filter-separator" />
+          <div className="products-filter-item">
+            <input type="checkbox" className="products-filter-checkbox" />
+            <div className="products-filter-item-text">BELL</div>
+          </div>
+          <div className="products-filter-item">
+            <input type="checkbox" className="products-filter-checkbox" />
+            <div className="products-filter-item-text">FEBI BILSTEIN</div>
+          </div>
+          <div className="products-filter-item">
+            <input type="checkbox" className="products-filter-checkbox" />
+            <div className="products-filter-item-text">MOBIL</div>
+          </div>
+          <div className="products-filter-item">
+            <input type="checkbox" className="products-filter-checkbox" />
+            <div className="products-filter-item-text">MOTUL</div>
+          </div>
+          <div className="products-filter-item">
+            <input type="checkbox" className="products-filter-checkbox" />
+            <div className="products-filter-item-text">NISOTEC</div>
+          </div>
+        </div>
       </div>
       <div className="products-search">
         <h3 className="products-search-title">
@@ -299,8 +323,8 @@ const Products = () => {
           </button>
         )}
         <div className="products-filter-right">
-          <h2 className="products-filter-title right">
-            Sortiraj prema{" "}
+          <div className="products-filter-title right">
+            {!smallWidth && <span>Sortiraj prema</span>}
             <select
               className="products-filter-select sort"
               onChange={handleSort}
@@ -311,15 +335,15 @@ const Products = () => {
               <option value="Naziv rastuce">Naziv rastuce</option>
               <option value="Naziv opadajuce">Naziv opadajuce</option>
             </select>
-            Prikazite{" "}
+            {!smallWidth && <span>Prikazite</span>}
             <select className="products-filter-select page">
               <option>3</option>
               <option>6</option>
               <option>9</option>
               <option>12</option>
-            </select>{" "}
-            po stranici
-          </h2>
+            </select>
+            {!smallWidth && <span>po stranici</span>}
+          </div>
           <div className="products-filter-separator" />
           {products.length !== 0 && (
             <div className="products-filter-list">

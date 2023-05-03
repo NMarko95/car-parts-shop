@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
 
 const AppContext = React.createContext();
@@ -11,23 +12,24 @@ const getFromLocalStorage = (text) => {
 
 const AppProvider = ({ children }) => {
   const [user, setUser] = useState(getFromLocalStorage("user"));
-  const [cart, setCart] = useState(getFromLocalStorage("cart") || []);
+  const [cart, setCart] = useState([]);
+
+  const baseURL = "https://localhost:7236";
 
   useEffect(() => {
+    const getCart = async () => {
+      const { data } = await axios.get(
+        `${baseURL}/Cart/GetProductsFromCart/${user.id}`
+      );
+      setCart(data);
+    };
     if (user) {
       localStorage.setItem("user", JSON.stringify(user));
+      getCart();
     } else {
       localStorage.removeItem("user");
     }
   }, [user]);
-
-  useEffect(() => {
-    if (cart) {
-      localStorage.setItem("cart", JSON.stringify(cart));
-    } else {
-      localStorage.removeItem("cart");
-    }
-  }, [cart]);
 
   return (
     <AppContext.Provider value={{ user, setUser, cart, setCart }}>

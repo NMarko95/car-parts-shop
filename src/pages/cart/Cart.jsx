@@ -6,11 +6,14 @@ import { useGlobalContext } from "../../context/Context";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import Pdf from "../../utilities/Pdf";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import axios from "axios";
 
 const Cart = () => {
-  const { cart, setCart } = useGlobalContext();
+  const { cart, setCart, user } = useGlobalContext();
 
   const delivery = 360;
+
+  const baseURL = "https://localhost:7236";
 
   const smallWidth = useMediaQuery("(min-width:350px) and (max-width:750px)");
 
@@ -23,7 +26,10 @@ const Cart = () => {
     return sum;
   };
 
-  const removeFromCart = (id) => {
+  const removeFromCart = async (id) => {
+    await axios.delete(
+      `${baseURL}/Cart/DeleteProductFromCart/${id}/${user.id}`
+    );
     const newCart = cart.filter((cartItem) => cartItem.id !== id);
     setCart(newCart);
   };

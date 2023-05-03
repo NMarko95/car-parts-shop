@@ -3,24 +3,6 @@ import "./miniCart.css";
 import { Link } from "react-router-dom";
 
 const MiniCart = () => {
-  /*const items = [
-    {
-      title: "Motorno ulje",
-      img: "https://automarket.blob.core.windows.net/articleimages2223/24974adb-b870-4db6-95bd-eb72829adeff",
-      price: 500,
-    },
-    {
-      title: "Motorno ulje",
-      img: "https://automarket.blob.core.windows.net/articleimages2223/24974adb-b870-4db6-95bd-eb72829adeff",
-      price: 500,
-    },
-    {
-      title: "Motorno ulje",
-      img: "https://automarket.blob.core.windows.net/articleimages2223/24974adb-b870-4db6-95bd-eb72829adeff",
-      price: 500,
-    },
-  ];*/
-
   const { cart } = useGlobalContext();
 
   return (
@@ -31,8 +13,8 @@ const MiniCart = () => {
             const { picture, name, price } = cartItem;
             const shorterName = name.substring(0, 40);
             return (
-              <div className="mini-cart-wrapper">
-                <article className="mini-cart-item" key={i}>
+              <div className="mini-cart-wrapper" key={i}>
+                <article className="mini-cart-item">
                   <img src={picture} alt="" className="mini-cart-img" />
                   <div className="mini-cart-info">
                     <h4 className="mini-cart-title">

@@ -4,17 +4,26 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import { useGlobalContext } from "../../context/Context";
+import axios from "axios";
 
 const ProductInformation = ({ product, count }) => {
-  const { setCart } = useGlobalContext();
+  const { cart, setCart, user } = useGlobalContext();
 
-  const handleAddToCart = () => {
-    console.log(count);
-    const newProduct = {
-      ...product,
-      selectedCount: count === undefined ? 1 : count,
-    };
-    setCart((prevCart) => [...prevCart, newProduct]);
+  const baseURL = "https://localhost:7236";
+
+  const handleAddToCart = async () => {
+    const newCount = count === undefined ? 1 : count;
+    const found = cart.find((cartItem) => cartItem.id === product.id);
+    if (found === undefined) {
+      await axios.post(
+        `${baseURL}/Cart/InputProductInCart/${product.id}/${user.id}/${newCount}`
+      );
+      const newProduct = {
+        ...product,
+        selectedCount: newCount,
+      };
+      setCart((prevCart) => [...prevCart, newProduct]);
+    }
   };
 
   return (
