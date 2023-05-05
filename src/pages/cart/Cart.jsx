@@ -7,11 +7,14 @@ import { PDFDownloadLink } from "@react-pdf/renderer";
 import Pdf from "../../utilities/Pdf";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import axios from "axios";
+import { useRef } from "react";
 
 const Cart = () => {
   const { cart, setCart, user } = useGlobalContext();
 
   const delivery = 360;
+
+  const numVehRef = useRef();
 
   const baseURL = "https://localhost:7236";
 
@@ -46,6 +49,14 @@ const Cart = () => {
         return { ...cartItem, selectedCount: inputs[i].value };
       })
     );
+  };
+
+  const handleAdd = async () => {
+    const numberOfVehicle = parseInt(numVehRef.current.value);
+    const { data } = await axios.post(
+      `${baseURL}/Transaction/InputProductsInTransaction/${user.id}/${numberOfVehicle}`
+    );
+    console.log(`Izvrsena je transakcija sa id-em: ${data}`);
   };
 
   return (
@@ -123,7 +134,11 @@ const Cart = () => {
           <div className="cart-checkout-left">
             <div className="cart-checkout-left-container">
               <span>Broj sasije</span>
-              <input placeholder="Unesite broj sasije radi provere ispravnosti" />
+              <input
+                required
+                placeholder="Unesite broj sasije radi provere ispravnosti"
+                ref={numVehRef}
+              />
             </div>
             <button className="cart-checkout-left-btn">DODAJTE</button>
           </div>
@@ -151,7 +166,10 @@ const Cart = () => {
                 Prihvatam Uslove poslovanja i Pravilnik o zaštiti podataka o
                 ličnosti (saznajte više)
               </div>
-              <button className="cart-checkout-right-button">
+              <button
+                className="cart-checkout-right-button"
+                onClick={handleAdd}
+              >
                 ZAVRSI PORUDZBINU
               </button>
             </div>

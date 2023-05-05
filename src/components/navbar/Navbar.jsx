@@ -85,7 +85,9 @@ const Navbar = () => {
                 <PersonIcon />
                 {isAccountDisplayed && (
                   <div className="navbar-account-menu">
-                    <div className="navbar-account-menu-item">Moj nalog</div>
+                    <Link to="/account" className="navbar-account-menu-item">
+                      Moj nalog
+                    </Link>
                     <div
                       className="navbar-account-menu-item"
                       onClick={handleLogout}
@@ -184,7 +186,9 @@ const Navbar = () => {
                 <PersonIcon />
                 {isAccountDisplayed && (
                   <div className="navbar-account-menu">
-                    <div className="navbar-account-menu-item">Moj nalog</div>
+                    <Link to="/account" className="navbar-account-menu-item">
+                      Moj nalog
+                    </Link>
                     <div
                       className="navbar-account-menu-item"
                       onClick={handleLogout}

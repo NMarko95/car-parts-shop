@@ -11,6 +11,7 @@ import Products from "./pages/products/Products";
 import SingleProduct from "./pages/singleProduct/SingleProduct";
 import Cart from "./pages/cart/Cart";
 import Homepage from "./pages/homepage/Homepage";
+import Account from "./pages/account/Account";
 
 const router = createBrowserRouter([
   {
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
       {
         path: "/parts",
         element: <PartsShow />,
+      },
+      {
+        path: "/account",
+        element: <Account />,
       },
       {
         path: "/choose-category/:catid/",
