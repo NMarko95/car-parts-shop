@@ -36,10 +36,10 @@ const Products = () => {
     const getProducts = async () => {
       let newGid = gid;
       if (gid === undefined) {
-        const { data } = await axios.get(
+        const response = await axios.get(
           `${baseURL}/Group/GetGroupName/${gname}`
         );
-        newGid = data.id;
+        newGid = response.data.id;
       }
       const { data } = await axios.get(
         `${baseURL}/Product/GetProduct/${newGid}/Podrazumevano`
@@ -82,7 +82,7 @@ const Products = () => {
           newGid = data.id;
         }
         const responses = await Promise.all(
-          products[0].gi.map((groupInfo) => {
+          groupInformation.map((groupInfo) => {
             return axios.get(
               `${baseURL}/GroupInformationData/GetGroupInformationDataCount/${newGid}/${groupInfo.id}`
             );
@@ -99,10 +99,16 @@ const Products = () => {
 
   const handleSort = async (e) => {
     const sort = e.target.value;
+    let newGid = gid;
+    if (gid === undefined) {
+      const response = await axios.get(
+        `${baseURL}/Group/GetGroupName/${gname}`
+      );
+      newGid = response.data.id;
+    }
     const { data } = await axios.get(
-      `${baseURL}/Product/GetProduct/${gid}/${sort}`
+      `${baseURL}/Product/GetProduct/${newGid}/${sort}`
     );
-    console.log(data);
     setProducts(data);
   };
 
@@ -348,7 +354,7 @@ const Products = () => {
           {products.length !== 0 && (
             <div className="products-filter-list">
               {products.map((p) => {
-                const { id, picture, name, gi, price, quantity } = p;
+                const { id, picture, name, price, quantity } = p;
                 return (
                   <article
                     className={`${
@@ -374,7 +380,7 @@ const Products = () => {
                       >
                         {name}
                       </Link>
-                      {gi.length !== 0 && (
+                      {groupInformation.length !== 0 && (
                         <div
                           className={`${
                             isChecked
@@ -382,7 +388,7 @@ const Products = () => {
                               : "products-filter-list-item-desc-information"
                           }`}
                         >
-                          {gi.map((i) => {
+                          {groupInformation.map((i) => {
                             return (
                               <span
                                 key={i.id}

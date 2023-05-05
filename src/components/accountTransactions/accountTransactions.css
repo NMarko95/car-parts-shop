@@ -14,6 +14,13 @@
     padding-left: 10px;
 }
 
+.account-transaction-item-header{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 2px;
+}
+
 .account-transaction-product{
     width: 100%;
     display: flex;

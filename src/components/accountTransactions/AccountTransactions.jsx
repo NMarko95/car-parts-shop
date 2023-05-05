@@ -69,11 +69,13 @@ const AccountTransactions = ({ user }) => {
             const { id, products } = t;
             return (
               <div className="account-transactions-item" key={id}>
-                <span>Transaction {i + 1}</span>
-                <ArrowDropDownIcon
-                  style={{ cursor: "pointer" }}
-                  onClick={(e) => handleCurrent(i)}
-                />
+                <div className="account-transaction-item-header">
+                  <span>Transaction {i + 1}</span>
+                  <ArrowDropDownIcon
+                    style={{ cursor: "pointer" }}
+                    onClick={(e) => handleCurrent(i)}
+                  />
+                </div>
                 {current === i && (
                   <div className="account-transaction">
                     {products[0].name !== undefined &&
