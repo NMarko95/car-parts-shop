@@ -353,8 +353,9 @@ const Products = () => {
           <div className="products-filter-separator" />
           {products.length !== 0 && (
             <div className="products-filter-list">
-              {products.map((p) => {
-                const { id, picture, name, price, quantity } = p;
+              {products.map((p, ind) => {
+                const { id, picture, name, gi, price, quantity } = p;
+                console.log(gi);
                 return (
                   <article
                     className={`${
@@ -388,7 +389,7 @@ const Products = () => {
                               : "products-filter-list-item-desc-information"
                           }`}
                         >
-                          {groupInformation.map((i) => {
+                          {gi.map((i) => {
                             return (
                               <span
                                 key={i.id}
