@@ -5,7 +5,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import MiniCart from "../miniCart/MiniCart";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useGlobalContext } from "../../context/Context";
@@ -22,12 +22,14 @@ const Navbar = () => {
   const [searchSubcategories, setSearchSubcategories] = useState([]);
   const [searchGroups, setSearchGroups] = useState([]);
 
-  const { user, setUser, cart } = useGlobalContext();
+  const { user, setUser } = useGlobalContext();
+
+  const searchInput = useRef();
 
   const smallWidth = useMediaQuery("(min-width:350px) and (max-width:750px)");
 
   const handleSearch = async (e) => {
-    const searchParameter = e.target.value;
+    const searchParameter = e.target.value.trim();
     if (searchParameter !== "") {
       let response = await axios.get(
         `${baseURL}/Category/SearchCategory/${searchParameter}`
@@ -48,10 +50,22 @@ const Navbar = () => {
     }
   };
 
-  const handleNavigate = async (id) => {
+  const handleNavigate = (id) => {
     let item = searchCategories.find((sc) => sc.id === id);
+    searchInput.current.value = "";
+    setSearchCategories([]);
+    setSearchSubcategories([]);
+    setSearchGroups([]);
     if (item !== undefined) {
       return navigate(`/choose-category/${item.id}`);
+    }
+    item = searchSubcategories.find((sc) => sc.id === id);
+    if (item !== undefined) {
+      return navigate(`/choose-subcategory/${item.id}`);
+    }
+    item = searchGroups.find((sc) => sc.id === id);
+    if (item !== undefined) {
+      return navigate(`/products/${item.id}`);
     }
   };
 
@@ -66,6 +80,11 @@ const Navbar = () => {
   const handleLogout = () => {
     setUser(undefined);
     return navigate("/login");
+  };
+
+  const redirectPanel = () => {
+    if (user?.admin) navigate("/admin");
+    else return;
   };
 
   return (
@@ -99,7 +118,10 @@ const Navbar = () => {
               </div>
             )}
             <div className="navbar-wishlist">
-              <LocalShippingIcon style={{ color: "#182f3f" }} />
+              <LocalShippingIcon
+                style={{ color: "#182f3f" }}
+                onClick={redirectPanel}
+              />
             </div>
             <div
               className="navbar-cart"
@@ -121,6 +143,7 @@ const Navbar = () => {
             className="navbar-search-input"
             placeholder="Pretraga artikala po nazivu"
             onChange={handleSearch}
+            ref={searchInput}
           />
           <div className="navbar-search-icon">
             <SearchIcon
@@ -172,7 +195,7 @@ const Navbar = () => {
         {!smallWidth && (
           <div className="navbar-phonenumber">
             <LocalPhoneIcon />
-            <span>060-555-333</span>
+            <span>060-444-222</span>
           </div>
         )}
         {!smallWidth && (
@@ -186,7 +209,10 @@ const Navbar = () => {
                 <PersonIcon />
                 {isAccountDisplayed && (
                   <div className="navbar-account-menu">
-                    <Link to="/account" className="navbar-account-menu-item">
+                    <Link
+                      to="/account/Informacije o korisniku"
+                      className="navbar-account-menu-item"
+                    >
                       Moj nalog
                     </Link>
                     <div
@@ -204,7 +230,10 @@ const Navbar = () => {
         {!smallWidth && (
           <>
             <div className="navbar-wishlist">
-              <LocalShippingIcon style={{ color: "#182f3f" }} />
+              <LocalShippingIcon
+                style={{ color: "#182f3f" }}
+                onClick={redirectPanel}
+              />
             </div>
             <div
               className="navbar-cart"

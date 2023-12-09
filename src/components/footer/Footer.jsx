@@ -7,12 +7,16 @@ import PlayCircleFilledOutlinedIcon from "@mui/icons-material/PlayCircleFilledOu
 import FacebookOutlinedIcon from "@mui/icons-material/FacebookOutlined";
 import CameraAltRoundedIcon from "@mui/icons-material/CameraAltRounded";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import { Link } from "react-router-dom";
+import { useGlobalContext } from "../../context/Context";
 
 const Footer = () => {
   const iconStyles = {
     color: "#182f3f",
     cursor: "pointer",
   };
+
+  const { user } = useGlobalContext();
 
   const smallWidth = useMediaQuery("(min-width:350px) and (max-width:750px)");
 
@@ -48,11 +52,15 @@ const Footer = () => {
         </div>
         <div className="footer-container">
           <h3 className="footer-title">MOJ NALOG</h3>
-          <span className="footer-span">Moj nalog</span>
-          <span className="footer-span">Porudžbine</span>
-          <span className="footer-span">Adrese</span>
-          <span className="footer-span">Korpa</span>
-          <span className="footer-span">Lista želja</span>
+          <Link to="/account/Informacije o korisniku" className="footer-span">
+            Moj nalog
+          </Link>
+          <Link to={`/account/Porudzbine`} className="footer-span">
+            Porudžbine
+          </Link>
+          <Link to="/cart" className="footer-span">
+            Korpa
+          </Link>
         </div>
         <div className="footer-bilten">
           <h3 className="footer-title">BILTEN</h3>

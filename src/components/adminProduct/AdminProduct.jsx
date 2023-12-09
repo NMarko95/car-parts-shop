@@ -35,6 +35,9 @@ const AdminProduct = () => {
 
   const [products, setProducts] = useState([]);
   const [vehicles, setVehicles] = useState([]);
+  const [engines, setEngines] = useState([]);
+  const [chooseEngine, setChooseEngine] = useState([]);
+  const [selectedEngine, setSelectedEngine] = useState([]);
   const [groups, setGroups] = useState([]);
   const [selectedGroup, setSelectedGroup] = useState("");
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -136,6 +139,17 @@ const AdminProduct = () => {
     setChooseVehicles(newChoose);
   };
 
+  const addIntoSelectedEngine = async (e) => {
+    const id = parseInt(e.target.value);
+    await axios.post(
+      `${baseURL}/ProductContainEngine/InputEngine/${selectedProduct.id}/${id}`
+    );
+    const eng = chooseEngine.find((cv) => cv.id === id);
+    setSelectedEngine([...selectedEngine, eng]);
+    const newChoose = chooseEngine.filter((cv) => cv.id !== id);
+    setChooseEngine(newChoose);
+  };
+
   const backToChoose = async (vehicle) => {
     await axios.delete(
       `${baseURL}/VehicleBelongProduct/DeleteVehicleBelongProduct/${vehicle.id}/${selectedProduct.id}`
@@ -143,6 +157,15 @@ const AdminProduct = () => {
     setChooseVehicles([...chooseVehicles, vehicle]);
     const newSelected = selectedVehicles.filter((sv) => sv.id !== vehicle.id);
     setSelectedVehicles(newSelected);
+  };
+
+  const backToChooseEngine = async (sendEngine) => {
+    await axios.delete(
+      `${baseURL}/Engine/DeleteProductContainEngine/${sendEngine.id}/${selectedProduct.id}`
+    );
+    setChooseEngine([...chooseEngine, sendEngine]);
+    const newSelected = selectedEngine.filter((sv) => sv.id !== sendEngine.id);
+    setSelectedEngine(newSelected);
   };
 
   const readFileDataAsBase64 = (e) => {
@@ -191,9 +214,15 @@ const AdminProduct = () => {
       const { data } = await axios.get(`${baseURL}/Vehicle/GetVehicles`);
       setVehicles(data);
     };
+    const getEngines = async () => {
+      const { data } = await axios.get(`${baseURL}/Engine/GetEngines`);
+      setEngines(data);
+    };
+
     getProducts();
     getGroups();
     getVehicles();
+    getEngines();
   }, []);
 
   useEffect(() => {
@@ -216,6 +245,8 @@ const AdminProduct = () => {
     if (!selectedGroup.hasVehicle) {
       setChooseVehicles([]);
       setSelectedVehicles([]);
+      setChooseEngine([]);
+      setSelectedEngine([]);
     }
   }, [selectedGroup]);
 
@@ -228,32 +259,51 @@ const AdminProduct = () => {
         setProductInformation(data);
       }
     };
-    const check = (data, v, bool) => {
+
+    const checkIfExists = (data, v) => {
       let exists = true;
-      data.map((d) => {
-        if (v.id !== d.id) {
-          exists = false;
-          return d;
-        }
+      data.map((vehicle) => {
+        if (v.id === vehicle.id) exists = false;
       });
-      return bool ? exists : !exists;
+      return exists;
     };
+
     const getVehicles = async () => {
       if (selectedProduct !== null) {
         const { data } = await axios.get(
           `${baseURL}/VehicleBelongProduct/GetProductVehicle/${selectedProduct.id}`
         );
-        let vehiclesSelected = vehicles.filter((v) => check(data, v, false));
-        let vehiclesChoose = vehicles.filter((v) => check(data, v, true));
+        console.log(data);
+        console.log(vehicles);
+        let vehiclesSelected = data;
+        let vehiclesChoose = vehicles.filter((v) => checkIfExists(data, v));
         setChooseVehicles(vehiclesChoose);
         setSelectedVehicles(vehiclesSelected);
       }
     };
+    const getEngines = async () => {
+      // ajisdqwnpiodnqiopwnipuqnwpenqwe
+      if (selectedProduct !== null) {
+        const { data } = await axios.get(
+          `${baseURL}/ProductContainEngine/GetProductEngine/${selectedProduct.id}`
+        );
+        console.log(data);
+        console.log(vehicles);
+        let engineSelected = data;
+        let engineChoose = engines.filter((v) => checkIfExists(data, v));
+        setChooseEngine(engineChoose);
+        setSelectedEngine(engineSelected);
+      }
+    };
     getPi();
-    if (group?.hasVehicle) getVehicles();
-    else {
+    if (group?.hasVehicle) {
+      getVehicles();
+      getEngines();
+    } else {
       setChooseVehicles([]);
       setSelectedVehicles([]);
+      setChooseEngine([]);
+      setSelectedEngine([]);
     }
   }, [selectedProduct]);
 
@@ -402,6 +452,33 @@ const AdminProduct = () => {
                     onClick={(e) => backToChoose(sv)}
                   >
                     {sv.brand} {sv.model} {sv.series}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
+        {selectedProduct !== null && (
+          <div className="product-add-vehicle-add">
+            <select onChange={addIntoSelectedEngine}>
+              <option value="">Engine</option>
+              {chooseEngine.map((eng) => {
+                return (
+                  <option key={eng.id} value={eng.id}>
+                    {eng.power} {"cm3"} {eng.volume} {"HP"}
+                  </option>
+                );
+              })}
+            </select>
+            <div className="product-add-vehicle-list">
+              {selectedEngine.map((eng) => {
+                return (
+                  <div
+                    className="product-add-vehicle-item"
+                    key={eng.id}
+                    onClick={(e) => backToChooseEngine(eng)}
+                  >
+                    {eng.power} {"cm3"} {eng.volume} {"HP"}
                   </div>
                 );
               })}

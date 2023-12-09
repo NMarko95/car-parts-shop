@@ -6,6 +6,7 @@ import AssignmentTurnedInIcon from "@mui/icons-material/AssignmentTurnedIn";
 import SellIcon from "@mui/icons-material/Sell";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import { useGlobalContext } from "../../context/Context";
 
 const SingleProduct = () => {
   /*const images = [
@@ -20,6 +21,8 @@ const SingleProduct = () => {
   const [count, setCount] = useState(1);
   const [specification, setSpecification] = useState(true);
   const [product, setProduct] = useState(null);
+
+  const { user } = useGlobalContext();
 
   const baseURL = "https://localhost:7236";
 
@@ -43,7 +46,7 @@ const SingleProduct = () => {
   };
 
   useEffect(() => {
-    const getpRoduct = async () => {
+    const getProduct = async () => {
       const { data } = await axios.get(
         `${baseURL}/Product/GetSingleProduct/${pid}`
       );
@@ -57,8 +60,25 @@ const SingleProduct = () => {
       const newProduct = { ...data, information: info };
       setProduct(newProduct);
     };
-    getpRoduct();
+    getProduct();
   }, [pid]);
+
+  useEffect(() => {
+    const handlePopularProduct = async () => {
+      if (user !== null) {
+        const { data } = await axios.get(
+          `${baseURL}/MostPopularProduct/CheckMostPopularExis/${pid}/${user.id}`
+        );
+        if (data === false) {
+          const { data } = await axios.post(
+            `${baseURL}/MostPopularProduct/SetMostPopularExis`,
+            { product: pid, user: user.id }
+          );
+        }
+      }
+    };
+    handlePopularProduct();
+  }, [pid, user]);
 
   if (product !== null) {
     return (

@@ -2,7 +2,7 @@
     display: flex;
     flex-direction: column;
     width: 90%;
-    height: 100px;
+    height: 130px;
     gap: 10px;
     margin: 10px;
 }
@@ -11,6 +11,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+   
 }
 
 .admin-users-add-select-box{

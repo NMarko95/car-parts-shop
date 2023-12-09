@@ -3,17 +3,20 @@ import PartsShow from "../../components/partsShow/PartsShow";
 import "./homepage.css";
 import axios from "axios";
 import HelpHero from "../../components/helpHero/HelpHero";
+import Vehicle from "../../components/vehicle/Vehicle";
+import { useOutletContext } from "react-router-dom";
 
 const Homepage = () => {
   const [categories, setCategories] = useState([]);
   const [subcategories, setSubcategories] = useState([]);
 
+  const [selectedType, setSelectedType] = useOutletContext();
   const baseURL = "https://localhost:7236";
 
   useEffect(() => {
     const getSubcategories = async () => {
       const { data } = await axios.get(
-        `${baseURL}/SubCategory/GetSubCategories`
+        `${baseURL}/SubCategory/GetSubCategoriesNotInCategory/${selectedType}`
       );
       const array = data.map((sc) => {
         const response = axios.get(
@@ -29,7 +32,9 @@ const Homepage = () => {
       setSubcategories(newSubcategories);
     };
     const getCategories = async () => {
-      const { data } = await axios.get(`${baseURL}/Category/GetCategories`);
+      const { data } = await axios.get(
+        `${baseURL}/Category/GetCategories/${selectedType}`
+      );
       const array = data.map((sc) => {
         const response = axios.get(
           `${baseURL}/SubCategory/GetSubCategoriesFromCategory/${sc.id}`
@@ -45,12 +50,25 @@ const Homepage = () => {
     };
     getCategories();
     getSubcategories();
-  }, []);
+    if (selectedType !== null) {
+      window.scrollTo(0, 1000);
+    } else {
+      window.scrollTo(0, 0);
+    }
+  }, [selectedType]);
 
   return (
     <>
+      <Vehicle
+        setCategories={setCategories}
+        setSubCategories={setSubcategories}
+      />
       <HelpHero />
-      <PartsShow subcategories={subcategories} categories={categories} />
+      <PartsShow
+        subcategories={subcategories}
+        categories={categories}
+        title={selectedType}
+      />
     </>
   );
 };

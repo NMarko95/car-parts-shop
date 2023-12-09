@@ -38,9 +38,9 @@ const SelectNavbar = () => {
       return `/products-name/${item.name}`;
     } else if (item.tag === "subcategory") {
       return `/choose-subcategory-name/${item.name}`;
-    } else {
-      return `/choose-category-name/${item.name}`;
-    }
+    } else if (item.name === "Svi delovi") {
+      return `/choose-category-name/${item.name}/all`;
+    } else return `/choose-category-name/${item.name}`;
   };
 
   return (
@@ -48,7 +48,7 @@ const SelectNavbar = () => {
       {dateEntries.map((de, i) => {
         return (
           <Link className="select-navbar-item" key={i} to={makeUrl(de)}>
-            <LocalShippingIcon style={{ color: "#f37122", fontSize: "24px" }} />
+            <LocalShippingIcon style={{ color: "#87C3E5", fontSize: "24px" }} />
             {!smallWidth && <span>{de.name}</span>}
             <div id="hover" />
           </Link>

@@ -2,6 +2,7 @@ import "./helpHero.css";
 import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
 import ListAltIcon from "@mui/icons-material/ListAlt";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import picture9 from "../../../src/picture/9.jpg";
 
 const HelpHero = () => {
   const smallWidth = useMediaQuery("(min-width:350px) and (max-width:750px)");
@@ -13,20 +14,18 @@ const HelpHero = () => {
       </div>
       {!smallWidth ? (
         <div className="help-hero-main">
-          <img
-            src="https://www.prodajadelova.rs/images/uploaded/treba-vam-pomoc_1000.jpeg"
-            className="help-hero-img"
-            alt=""
-          />
-          <div className="help-hero-consult">
-            <span>Konsultujte se ili porucite telefonom</span>
-            <div className="help-hero-consult-phone">
-              <LocalPhoneIcon />
-              <span>060-555-333</span>
-            </div>
-            <div className="help-hero-consult-offer">
-              <ListAltIcon />
-              <span>Zatrazite personalizovanu ponudu</span>
+          <div className="information-servis">
+            <img src={picture9} className="help-hero-img" alt="" />
+            <div className="help-hero-consult">
+              <span>Konsultujte se ili porucite telefonom</span>
+              <div className="help-hero-consult-phone">
+                <LocalPhoneIcon />
+                <span>060-555-333</span>
+              </div>
+              <div className="help-hero-consult-offer">
+                <ListAltIcon />
+                <span>Zatrazite personalizovanu ponudu</span>
+              </div>
             </div>
           </div>
           <div className="help-hero-description">
@@ -49,11 +48,7 @@ const HelpHero = () => {
         </div>
       ) : (
         <>
-          <img
-            src="https://www.prodajadelova.rs/images/uploaded/treba-vam-pomoc_1000.jpeg"
-            className="help-hero-img"
-            alt=""
-          />
+          <img src={picture9} className="help-hero-img" alt="" />
           <div className="help-hero-consult">
             <span>Konsultujte se ili porucite telefonom</span>
             <div className="help-hero-consult-phone">

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./login.css";
 import axios from "axios";
 import { useGlobalContext } from "../../context/Context";
@@ -26,6 +26,10 @@ const Login = () => {
       value: "password",
     },
   ];
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const handleLogin = async () => {
     const { data } = await axios.post(

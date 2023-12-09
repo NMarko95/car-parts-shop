@@ -13,6 +13,10 @@ const getFromLocalStorage = (text) => {
 const AppProvider = ({ children }) => {
   const [user, setUser] = useState(getFromLocalStorage("user"));
   const [cart, setCart] = useState([]);
+  const [selectedVehicle, setSelectedVehicle] = useState(
+    getFromLocalStorage("vehicle")
+  );
+  const [openToast, setOpenToast] = useState(false);
 
   const baseURL = "https://localhost:7236";
 
@@ -31,11 +35,35 @@ const AppProvider = ({ children }) => {
     }
   }, [user]);
 
-  return (
-    <AppContext.Provider value={{ user, setUser, cart, setCart }}>
-      {children}
-    </AppContext.Provider>
-  );
+  useEffect(() => {
+    if (selectedVehicle) {
+      localStorage.setItem("vehicle", JSON.stringify(selectedVehicle));
+    } else {
+      localStorage.removeItem("vehicle");
+    }
+  }, [selectedVehicle]);
+
+  useEffect(() => {
+    if (openToast) {
+      setInterval(() => {
+        setOpenToast(false);
+      }, 6000);
+    }
+    return () => clearInterval();
+  }, [openToast]);
+
+  const values = {
+    user,
+    setUser,
+    cart,
+    setCart,
+    openToast,
+    setOpenToast,
+    selectedVehicle,
+    setSelectedVehicle,
+  };
+
+  return <AppContext.Provider value={values}>{children}</AppContext.Provider>;
 };
 
 export const useGlobalContext = () => {

@@ -33,12 +33,19 @@ const ProductInformation = ({ product, count }) => {
       </h4>
       <div className="product-information-contact phone">
         <LocalPhoneIcon />
-        <span>060-555-333</span>
+        <span>060-444-222</span>
       </div>
-      <div className="product-information-contact available">
-        <CheckCircleIcon />
-        <span>{product.quantity > 0 ? "Dostupno" : "Nedostupno"}</span>
-      </div>
+      {product.quantity > 0 ? (
+        <div className="product-information-contact available">
+          <CheckCircleIcon />
+          <span> "Dostupno" </span>
+        </div>
+      ) : (
+        <div className="product-information-contact unavailable">
+          <CheckCircleIcon />
+          <span>"Nedostupno" </span>
+        </div>
+      )}
       <div className="product-information-price">
         <span className="text">Cena:</span>
         <h3 className="price">
@@ -46,23 +53,26 @@ const ProductInformation = ({ product, count }) => {
           <span>00</span> sa PDV-om
         </h3>
       </div>
-      <button
-        className="product-information-btn cart-btn"
-        onClick={handleAddToCart}
-      >
-        <ShoppingCartIcon
-          style={{ height: "20px", width: "20px" }}
-          className="product-information-icon"
-        />
-        DODAJTE U KORPU
-      </button>
-      <button className="product-information-btn wishlist">
-        <FavoriteBorderOutlinedIcon
-          style={{ height: "20px", width: "20px" }}
-          className="product-information-icon"
-        />
-        DODAJTE U LISTU ZELJA
-      </button>
+      {product.quantity > 0 ? (
+        <button
+          className="product-information-btn cart-btn"
+          onClick={handleAddToCart}
+        >
+          <ShoppingCartIcon
+            style={{ height: "20px", width: "20px" }}
+            className="product-information-icon"
+          />
+          <span>DODAJTE U KORPU</span>
+        </button>
+      ) : (
+        <button className="product-information-btn cart-btn unavailable">
+          <ShoppingCartIcon
+            style={{ height: "20px", width: "20px" }}
+            className="product-information-icon"
+          />
+          <span>DODAJTE U KORPU</span>
+        </button>
+      )}
     </div>
   );
 };

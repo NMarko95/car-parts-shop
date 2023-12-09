@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import "./products.css";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import AutorenewRoundedIcon from "@mui/icons-material/AutorenewRounded";
 import ProductInformation from "../../components/productInformation/ProductInformation";
 import axios from "axios";
 import { useParams, Link } from "react-router-dom";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
+import { useGlobalContext } from "../../context/Context";
 
 const Products = () => {
   const { gid, gname } = useParams();
@@ -16,10 +18,17 @@ const Products = () => {
   });
   const [isChecked, setIsChecked] = useState(false);
   const [products, setProducts] = useState([]);
+  const [filteringProducts, setFilteringProducts] = useState([]);
   const [groupInformation, setGroupInformation] = useState([]);
   //const [productInformation, setProductInformation] = useState([]);
   const [gidCount, setGidCount] = useState([]);
   const [isFiltering, setIsFiltering] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [prodPerPage, setProdPerPage] = useState(3);
+  const [count, setCount] = useState(0);
+  const [sort, setSort] = useState("Podrazumevano");
+
+  const { selectedVehicle, setSelectedVehicle } = useGlobalContext();
 
   const smallWidth = useMediaQuery("(min-width:350px) and (max-width:750px)");
 
@@ -32,44 +41,135 @@ const Products = () => {
 
   const baseURL = "https://localhost:7236";
 
+  const handleChangePage = (newPage) => {
+    setCurrentPage(newPage);
+    fullReset();
+  };
+
+  const handleChangeType = (e) => {
+    setProdPerPage(e.target.value);
+    setCurrentPage(1);
+  };
+
+  const createPagination = () => {
+    let pages = [];
+    for (let i = 0; i < count; i++) {
+      pages.push(
+        <div
+          className={`pagination-item ${
+            i + 1 === currentPage ? "selected" : ""
+          }`}
+          onClick={() => handleChangePage(i + 1)}
+        >
+          {i + 1}
+        </div>
+      );
+    }
+    return pages;
+  };
+
   useEffect(() => {
     const getProducts = async () => {
+      let countProducts;
       let newGid = gid;
-      if (gid === undefined) {
-        const response = await axios.get(
-          `${baseURL}/Group/GetGroupName/${gname}`
-        );
-        newGid = response.data.id;
-      }
-      const { data } = await axios.get(
-        `${baseURL}/Product/GetProduct/${newGid}/Podrazumevano`
+      let currentGroup = {};
+      let response = await axios.get(
+        `${baseURL}/Product/GetCountProducts/${newGid}`
       );
-      if (data.length !== 0) {
-        const response = await Promise.all(
-          data.map((p) => {
-            return axios.get(
-              `${baseURL}/GroupInformationData/GetGroupInformationData/${newGid}/${p.id}`
-            );
-          })
+      countProducts = parseInt(response.data / prodPerPage);
+      if (response.data % prodPerPage !== 0) countProducts++;
+      setCount(countProducts);
+      response = await axios.get(`${baseURL}/Group/GetGroup/${newGid}`);
+      currentGroup = response.data;
+      if (currentGroup.hasVehicle) {
+        //// DODAJ OVDE KOD ZA HAS VEHICLE TRUE
+        /*const engine = {
+          power: selectedVehicle.engine.power,
+          volume: selectedVehicle.engine.volume
+        }*/
+        const { engine, ...allElse } = selectedVehicle;
+        const { power, volume } = engine;
+        const { brand, model, series } = allElse;
+        console.log("Zove se za vozilo");
+        console.log(sort);
+        const { data } = await axios.post(
+          `${baseURL}/Product/GetProductVehicle/`,
+          {
+            group: parseInt(newGid),
+            sort: sort,
+            power,
+            volume,
+            brand,
+            model,
+            series,
+            ppp: prodPerPage,
+            currentPage: currentPage,
+          }
         );
-        // creating groupInformation state
-        let gInfo = [];
-        response[0].data.map((item) => {
-          gInfo.push({
-            name: item.name,
-            id: item.id,
+        if (data.length !== 0) {
+          const response = await Promise.all(
+            data.map((p) => {
+              return axios.get(
+                `${baseURL}/GroupInformationData/GetGroupInformationData/${newGid}/${p.id}`
+              );
+            })
+          );
+          // creating groupInformation state
+          let gInfo = [];
+          response[0].data.map((item) => {
+            gInfo.push({
+              name: item.name,
+              id: item.id,
+            });
+            return item;
           });
-          return item;
-        });
-        setGroupInformation(gInfo);
-        const newResponse = response.map((r, i) => {
-          return { ...data[i], gi: r.data };
-        });
-        setProducts(newResponse);
+          setGroupInformation(gInfo);
+          const newResponse = response.map((r, i) => {
+            return { ...data[i], gi: r.data };
+          });
+          setProducts(newResponse);
+        }
+      } else {
+        if (gid === undefined) {
+          const response = await axios.get(
+            `${baseURL}/Group/GetGroupName/${gname}`
+          );
+
+          newGid = response.data.id;
+        }
+
+        const { data } = await axios.get(
+          `${baseURL}/Product/GetProduct/${newGid}/${sort}/${prodPerPage}/${
+            currentPage - 1
+          }`
+        );
+        if (data.length !== 0) {
+          const response = await Promise.all(
+            data.map((p) => {
+              return axios.get(
+                `${baseURL}/GroupInformationData/GetGroupInformationData/${newGid}/${p.id}`
+              );
+            })
+          );
+          // creating groupInformation state
+          let gInfo = [];
+          response[0].data.map((item) => {
+            gInfo.push({
+              name: item.name,
+              id: item.id,
+            });
+            return item;
+          });
+          setGroupInformation(gInfo);
+          const newResponse = response.map((r, i) => {
+            return { ...data[i], gi: r.data };
+          });
+          setProducts(newResponse);
+        }
       }
     };
     getProducts();
-  }, [gid, gname]);
+  }, [gid, gname, currentPage, prodPerPage]);
 
   useEffect(() => {
     const getGidCount = async () => {
@@ -95,10 +195,13 @@ const Products = () => {
       }
     };
     getGidCount();
+    setFilteringProducts(products);
   }, [products, gid]);
 
   const handleSort = async (e) => {
-    const sort = e.target.value;
+    setSort(e.target.value);
+    const sortElement = e.target.value;
+    console.log(sortElement);
     let newGid = gid;
     if (gid === undefined) {
       const response = await axios.get(
@@ -106,10 +209,55 @@ const Products = () => {
       );
       newGid = response.data.id;
     }
+    console.log(prodPerPage);
+    console.log(currentPage);
     const { data } = await axios.get(
-      `${baseURL}/Product/GetProduct/${newGid}/${sort}`
+      `${baseURL}/Product/GetProduct/${newGid}/${sortElement}/${prodPerPage}/${
+        currentPage - 1
+      } `
     );
-    setProducts(data);
+    console.log(data);
+    if (data.length !== 0) {
+      const response = await Promise.all(
+        data.map((p) => {
+          return axios.get(
+            `${baseURL}/GroupInformationData/GetGroupInformationData/${newGid}/${p.id}`
+          );
+        })
+      );
+      // creating groupInformation state
+      let gInfo = [];
+      response[0].data.map((item) => {
+        gInfo.push({
+          name: item.name,
+          id: item.id,
+        });
+        return item;
+      });
+      setGroupInformation(gInfo);
+      const newResponse = response.map((r, i) => {
+        return { ...data[i], gi: r.data };
+      });
+      setProducts(newResponse);
+    }
+  };
+
+  const handleFilter = (bool) => {
+    let newProducts = [];
+    if (bool) {
+      newProducts = products.filter((p) => p.quantity >= 1);
+    } else {
+      newProducts = products.filter((p) => p.quantity < 1);
+    }
+    smallWidth && handleFilterToggle();
+    setFilteringProducts(newProducts);
+  };
+
+  const fullReset = () => {
+    setFilteringProducts(products);
+    const radioButtons = document.querySelectorAll("input[type=radio]");
+    radioButtons.forEach((rb) => (rb.checked = false));
+    smallWidth && handleFilterToggle();
   };
 
   const handleChangeGi = (e) => {
@@ -125,9 +273,14 @@ const Products = () => {
     let names = [];
     let data = [];
     groupInformation.map((g, i) => {
+      let newData = "";
+      let currentData = gis[i].innerHTML;
+      if (currentData !== groupInformation[i].name) {
+        newData = [...currentData].reverse().join("").split("( ")[1];
+        newData = [...newData].reverse().join("");
+      }
       names[i] = g.name;
-      data[i] =
-        gis[i].innerHTML === g.name ? "" : gis[i].innerHTML.split(" ")[0];
+      data[i] = gis[i].innerHTML === g.name ? "" : newData;
       return g;
     });
     const response = await axios.post(`${baseURL}/Product/GetDataProducts`, {
@@ -161,6 +314,10 @@ const Products = () => {
     setIsFiltering(!isFiltering);
   };
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <div className="products">
       <div
@@ -180,38 +337,26 @@ const Products = () => {
           <h2 className="products-filter-title">Dostupnost</h2>
           <div className="products-filter-separator" />
           <div className="products-filter-item">
-            <input type="checkbox" className="products-filter-checkbox" />
-            <div className="products-filter-item-text">NEDOSTUPNO</div>
+            <input
+              type="radio"
+              name="filter"
+              onChange={(e) => handleFilter(false)}
+            />
+            <label htmlFor="filter">NEDOSTUPNO</label>
           </div>
           <div className="products-filter-item">
-            <input type="checkbox" className="products-filter-checkbox" />
-            <div className="products-filter-item-text">DOSTUPNO</div>
+            <input
+              type="radio"
+              name="filter"
+              onChange={(e) => handleFilter(true)}
+            />
+            <label htmlFor="filter">DOSTUPNO</label>
           </div>
         </div>
-        <div className="products-filter-content">
-          <h2 className="products-filter-title">Proizvodjac</h2>
-          <div className="products-filter-separator" />
-          <div className="products-filter-item">
-            <input type="checkbox" className="products-filter-checkbox" />
-            <div className="products-filter-item-text">BELL</div>
-          </div>
-          <div className="products-filter-item">
-            <input type="checkbox" className="products-filter-checkbox" />
-            <div className="products-filter-item-text">FEBI BILSTEIN</div>
-          </div>
-          <div className="products-filter-item">
-            <input type="checkbox" className="products-filter-checkbox" />
-            <div className="products-filter-item-text">MOBIL</div>
-          </div>
-          <div className="products-filter-item">
-            <input type="checkbox" className="products-filter-checkbox" />
-            <div className="products-filter-item-text">MOTUL</div>
-          </div>
-          <div className="products-filter-item">
-            <input type="checkbox" className="products-filter-checkbox" />
-            <div className="products-filter-item-text">NISOTEC</div>
-          </div>
-        </div>
+        <button className="reset-filter-vehicle" onClick={fullReset}>
+          <AutorenewRoundedIcon />
+          <h3>Resetujte filtere</h3>
+        </button>
       </div>
       <div className="products-search">
         <h3 className="products-search-title">
@@ -287,38 +432,28 @@ const Products = () => {
               <h2 className="products-filter-title">Dostupnost</h2>
               <div className="products-filter-separator" />
               <div className="products-filter-item">
-                <input type="checkbox" className="products-filter-checkbox" />
-                <div className="products-filter-item-text">NEDOSTUPNO</div>
+                {" "}
+                <input
+                  type="radio"
+                  name="filter"
+                  onChange={(e) => handleFilter(false)}
+                />
+                <label htmlFor="filter">NEDOSTUPNO</label>
               </div>
               <div className="products-filter-item">
-                <input type="checkbox" className="products-filter-checkbox" />
-                <div className="products-filter-item-text">DOSTUPNO</div>
+                {" "}
+                <input
+                  type="radio"
+                  name="filter"
+                  onChange={(e) => handleFilter(true)}
+                />
+                <label htmlFor="filter">DOSTUPNO</label>
               </div>
             </div>
-            <div className="products-filter-content">
-              <h2 className="products-filter-title">Proizvodjac</h2>
-              <div className="products-filter-separator" />
-              <div className="products-filter-item">
-                <input type="checkbox" className="products-filter-checkbox" />
-                <div className="products-filter-item-text">BELL</div>
-              </div>
-              <div className="products-filter-item">
-                <input type="checkbox" className="products-filter-checkbox" />
-                <div className="products-filter-item-text">FEBI BILSTEIN</div>
-              </div>
-              <div className="products-filter-item">
-                <input type="checkbox" className="products-filter-checkbox" />
-                <div className="products-filter-item-text">MOBIL</div>
-              </div>
-              <div className="products-filter-item">
-                <input type="checkbox" className="products-filter-checkbox" />
-                <div className="products-filter-item-text">MOTUL</div>
-              </div>
-              <div className="products-filter-item">
-                <input type="checkbox" className="products-filter-checkbox" />
-                <div className="products-filter-item-text">NISOTEC</div>
-              </div>
-            </div>
+            <button className="reset-filter-vehicle" onClick={fullReset}>
+              <AutorenewRoundedIcon />
+              <h3>Resetujte filtere</h3>
+            </button>
           </div>
         ) : (
           <button
@@ -342,20 +477,22 @@ const Products = () => {
               <option value="Naziv opadajuce">Naziv opadajuce</option>
             </select>
             {!smallWidth && <span>Prikazite</span>}
-            <select className="products-filter-select page">
-              <option>3</option>
-              <option>6</option>
-              <option>9</option>
-              <option>12</option>
+            <select
+              className="products-filter-select page"
+              onChange={handleChangeType}
+            >
+              <option value={3}>3</option>
+              <option value={6}>6</option>
+              <option value={9}>9</option>
+              <option value={12}>12</option>
             </select>
             {!smallWidth && <span>po stranici</span>}
           </div>
           <div className="products-filter-separator" />
-          {products.length !== 0 && (
+          {filteringProducts.length !== 0 && (
             <div className="products-filter-list">
-              {products.map((p, ind) => {
+              {filteringProducts.map((p, ind) => {
                 const { id, picture, name, gi, price, quantity } = p;
-                console.log(gi);
                 return (
                   <article
                     className={`${
@@ -389,16 +526,18 @@ const Products = () => {
                               : "products-filter-list-item-desc-information"
                           }`}
                         >
-                          {gi.map((i) => {
-                            return (
-                              <span
-                                key={i.id}
-                                className="products-filter-list-item-desc-information-text odd"
-                              >
-                                {i.name}: {i.data}
-                              </span>
-                            );
-                          })}
+                          {gi !== undefined &&
+                            gi.length !== 0 &&
+                            gi.map((i) => {
+                              return (
+                                <span
+                                  key={i.id}
+                                  className="products-filter-list-item-desc-information-text odd"
+                                >
+                                  {i.name}: {i.data}
+                                </span>
+                              );
+                            })}
                           {/* OVDE UBACI PRODUCT INFORMATION */}
                         </div>
                       )}
@@ -424,6 +563,7 @@ const Products = () => {
               })}
             </div>
           )}
+          <div className="pagination">{createPagination()}</div>
         </div>
       </div>
     </div>

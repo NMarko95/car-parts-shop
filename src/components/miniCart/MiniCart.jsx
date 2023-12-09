@@ -32,7 +32,7 @@ const MiniCart = () => {
             );
           })
         ) : (
-          <div className="mini-cart-item">No items in cart</div>
+          <div className="mini-cart-item">Nema proizvoda u korpi</div>
         )}
       </div>
       {cart.length !== 0 && (

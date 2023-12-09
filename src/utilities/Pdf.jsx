@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
   },
 });
 
-function Pdf({ cart, calculateSum }) {
+function Pdf({ cart = [], calculateSum, products = [] }) {
   return (
     <Document>
       <Page size="A4" style={styles.page}>
@@ -128,28 +128,53 @@ function Pdf({ cart, calculateSum }) {
               <Text style={styles.text}>Ukupan iznos</Text>
             </View>
           </View>
-          {cart.map((cartItem) => {
-            const { name, id, price, selectedCount } = cartItem;
-            return (
-              <View style={styles.row} key={id}>
-                <View style={styles.tableCellName}>
-                  <Text style={styles.text}>{name}</Text>
+          {cart.length !== 0 &&
+            cart.map((cartItem) => {
+              const { name, id, price, selectedCount } = cartItem;
+              return (
+                <View style={styles.row} key={id}>
+                  <View style={styles.tableCellName}>
+                    <Text style={styles.text}>{name}</Text>
+                  </View>
+                  <View style={styles.tableCell}>
+                    <Text style={styles.text}>{id}</Text>
+                  </View>
+                  <View style={styles.tableCell}>
+                    <Text style={styles.text}>{price}</Text>
+                  </View>
+                  <View style={styles.tableCell}>
+                    <Text style={styles.text}>{selectedCount}</Text>
+                  </View>
+                  <View style={styles.tableCell}>
+                    <Text style={styles.text}>{price * selectedCount}</Text>
+                  </View>
                 </View>
-                <View style={styles.tableCell}>
-                  <Text style={styles.text}>{id}</Text>
+              );
+            })}
+          {products.length !== 0 &&
+            products.map((productItem) => {
+              console.log(productItem);
+              const { name, id, price, selectedCount } = productItem;
+              return (
+                <View style={styles.row} key={id}>
+                  <View style={styles.tableCellName}>
+                    <Text style={styles.text}>{name}</Text>
+                  </View>
+                  <View style={styles.tableCell}>
+                    <Text style={styles.text}>{id}</Text>
+                  </View>
+                  <View style={styles.tableCell}>
+                    <Text style={styles.text}>{price}</Text>
+                  </View>
+                  <View style={styles.tableCell}>
+                    <Text style={styles.text}>{selectedCount}</Text>
+                  </View>
+                  <View style={styles.tableCell}>
+                    <Text style={styles.text}>{price * selectedCount}</Text>
+                  </View>
                 </View>
-                <View style={styles.tableCell}>
-                  <Text style={styles.text}>{price}</Text>
-                </View>
-                <View style={styles.tableCell}>
-                  <Text style={styles.text}>{selectedCount}</Text>
-                </View>
-                <View style={styles.tableCell}>
-                  <Text style={styles.text}>{price * selectedCount}</Text>
-                </View>
-              </View>
-            );
-          })}
+              );
+            })}
         </View>
         <Text style={styles.text}>
           Ukupan iznos sa PDV-om: {calculateSum()}

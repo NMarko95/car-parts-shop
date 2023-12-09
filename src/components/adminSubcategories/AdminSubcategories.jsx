@@ -10,6 +10,7 @@ const AdminSubcategories = () => {
     picture: "",
     details: "",
     subCategories: [],
+    type: {},
   };
 
   let dataEntries = [
@@ -32,6 +33,14 @@ const AdminSubcategories = () => {
   const [subCategories, setSubCategories] = useState([]);
   const [isAdding, setIsAdding] = useState(false);
   const [isUpdate, setIsUpdate] = useState(false);
+  const [types, setTypes] = useState([]);
+
+  const handleChangeType = (e) => {
+    if (e.target.value === "") return;
+    const selectedId = parseInt(e.target.value);
+    const selectedType = types.find((type) => selectedId === type.id);
+    setNewCategory({ ...newCategory, type: selectedType });
+  };
 
   const handleAdd = async () => {
     const newSubCategories = newCategory.subCategories.map((sc) => {
@@ -40,6 +49,9 @@ const AdminSubcategories = () => {
     const { data } = await axios.post(
       "https://localhost:7236/SubCategory/InputSubCategory",
       newCategory
+    );
+    const { dataType } = await axios.post(
+      `https://localhost:7236/SubCategoryBelongType/InputType/${newCategory.type.id}/${data}`
     );
     /*await axios.post(
       `https://localhost:7236/FindCategory/InputSubCategory/${data}`,
@@ -130,6 +142,10 @@ const AdminSubcategories = () => {
   };
 
   useEffect(() => {
+    const getTypes = async () => {
+      const { data } = await axios.get("https://localhost:7236/Type/GetTypes");
+      setTypes(data);
+    };
     const getCategories = async () => {
       const { data } = await axios.get(
         "https://localhost:7236/Category/GetCategories"
@@ -142,6 +158,7 @@ const AdminSubcategories = () => {
       );
       setSubCategories(data);
     };
+    getTypes();
     getCategories();
     getSubCategories();
   }, []);
@@ -160,14 +177,33 @@ const AdminSubcategories = () => {
       {isAdding && (
         <div className="admin-users-add-subcategories">
           <div className="admin-users-add-select">
+            {types.length !== 0 && (
+              <div className="admin-users-input">
+                <h5 className="admin-users-input-title">Tip:</h5>
+                <select
+                  className="admin-users-input-box"
+                  onChange={handleChangeType}
+                >
+                  <option value="tip"></option>
+                  {types.map((type) => {
+                    const { id, name } = type;
+                    return (
+                      <option key={id} value={id}>
+                        {name}
+                      </option>
+                    );
+                  })}
+                </select>
+              </div>
+            )}
             {categories.length !== 0 && (
               <div className="admin-users-input">
-                <h5 className="admin-users-input-title">Category:</h5>
+                <h5 className="admin-users-input-title">Kategorija:</h5>
                 <select
                   className="admin-users-input-box"
                   onChange={handleChangeCategory}
                 >
-                  <option value="category">Category</option>
+                  <option value="category"></option>
                   {categories.map((cat) => {
                     const { id, name } = cat;
                     return (
@@ -238,15 +274,17 @@ const AdminSubcategories = () => {
           <div className="admin-users-main-item">Ime</div>
           {/*<div className="admin-users-main-item">Slika</div>*/}
           <div className="admin-users-main-item">Detalji</div>
+          <div className="admin-users-main-item">Tip</div>
         </div>
         {subCategories.length !== 0 &&
           subCategories.map((user) => {
-            const { id, name, details, picture } = user;
+            const { id, name, details, picture, type } = user;
             return (
               <div className="admin-users-main-row" key={id}>
                 <div className="admin-users-main-item">{id}</div>
                 <div className="admin-users-main-item">{name}</div>
                 <div className="admin-users-main-item">{details}</div>
+                <div className="admin-users-main-item">{type.name}</div>
                 {/*<div className="admin-users-main-item">{picture}</div>*/}
                 <div className="admin-users-main-item-options">
                   <CreateIcon

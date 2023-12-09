@@ -12,6 +12,7 @@ import SingleProduct from "./pages/singleProduct/SingleProduct";
 import Cart from "./pages/cart/Cart";
 import Homepage from "./pages/homepage/Homepage";
 import Account from "./pages/account/Account";
+import FullMagacine from "./pages/fullMagacine/Fullmagacine";
 
 const router = createBrowserRouter([
   {
@@ -35,7 +36,7 @@ const router = createBrowserRouter([
         element: <PartsShow />,
       },
       {
-        path: "/account",
+        path: "/account/:tab",
         element: <Account />,
       },
       {
@@ -45,6 +46,10 @@ const router = createBrowserRouter([
       {
         path: "/choose-category-name/:catid/",
         element: <ChooseGroup />,
+      },
+      {
+        path: "/choose-category-name/:catid/all",
+        element: <FullMagacine />,
       },
       {
         path: "/choose-subcategory/:catid/",

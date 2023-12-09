@@ -9,6 +9,7 @@ const AdminCategories = () => {
     name: "",
     picture: "",
     details: "",
+    type: {},
   };
 
   let dataEntries = [
@@ -30,16 +31,28 @@ const AdminCategories = () => {
   const [categories, setCategories] = useState([]);
   const [isAdding, setIsAdding] = useState(false);
   const [isUpdate, setIsUpdate] = useState(false);
+  const [types, setTypes] = useState([]);
 
   const handleAdd = async () => {
     const { data } = await axios.post(
       "https://localhost:7236/Category/InputCategory",
       newCategory
     );
+    const { dataType } = await axios.post(
+      `https://localhost:7236/CategoryBelongType/InputType/${newCategory.type.id}/${data}`
+    );
+
     const newCreatedCategory = { ...newCategory, id: data };
     setCategories([...categories, newCreatedCategory]);
     setNewCategory(emptyCategory);
     setIsAdding(false);
+  };
+
+  const handleChangeType = (e) => {
+    if (e.target.value === "") return;
+    const selectedId = parseInt(e.target.value);
+    const selectedType = types.find((type) => selectedId === type.id);
+    setNewCategory({ ...newCategory, type: selectedType });
   };
 
   const readFileDataAsBase64 = (e) => {
@@ -99,6 +112,10 @@ const AdminCategories = () => {
   };*/
 
   useEffect(() => {
+    const getTypes = async () => {
+      const { data } = await axios.get("https://localhost:7236/Type/GetTypes");
+      setTypes(data);
+    };
     const getCategories = async () => {
       const { data } = await axios.get(
         "https://localhost:7236/Category/GetCategories"
@@ -106,7 +123,10 @@ const AdminCategories = () => {
       setCategories(data);
     };
     getCategories();
+    getTypes();
   }, []);
+
+  console.log(categories);
 
   return (
     <>
@@ -121,6 +141,25 @@ const AdminCategories = () => {
       </div>
       {isAdding && (
         <div className="admin-users-add">
+          {types.length !== 0 && (
+            <div className="admin-users-input">
+              <h5 className="admin-users-input-title">Tip:</h5>
+              <select
+                className="admin-users-input-box"
+                onChange={handleChangeType}
+              >
+                <option value="tip"></option>
+                {types.map((type) => {
+                  const { id, name } = type;
+                  return (
+                    <option key={id} value={id}>
+                      {name}
+                    </option>
+                  );
+                })}
+              </select>
+            </div>
+          )}
           {/* informations about user */}
           {dataEntries.map((entry, index) => {
             const { name, value } = entry;
@@ -153,15 +192,17 @@ const AdminCategories = () => {
           <div className="admin-users-main-item">Ime</div>
           {/*<div className="admin-users-main-item">Slika</div>*/}
           <div className="admin-users-main-item">Detalji</div>
+          <div className="admin-users-main-item">Tip</div>
         </div>
         {categories.length !== 0 &&
           categories.map((user) => {
-            const { id, name, details, picture } = user;
+            const { id, name, details, picture, type } = user;
             return (
               <div className="admin-users-main-row" key={id}>
                 <div className="admin-users-main-item">{id}</div>
                 <div className="admin-users-main-item">{name}</div>
                 <div className="admin-users-main-item">{details}</div>
+                <div className="admin-users-main-item">{type.name}</div>
                 {/*<div className="admin-users-main-item">{picture}</div>*/}
                 <div className="admin-users-main-item-options">
                   <CreateIcon

@@ -11,6 +11,7 @@ const AdminGroups = () => {
     details: "",
     subCategories: [],
     has_vehicle: false,
+    type: {},
   };
 
   let dataEntries = [
@@ -41,8 +42,16 @@ const AdminGroups = () => {
   const [isUpdate, setIsUpdate] = useState(false);
   const [selectedGroup, setSelectedGroup] = useState(null);
   const [groupInformation, setGroupInformation] = useState([]);
+  const [types, setTypes] = useState([]);
 
   const giRef = useRef();
+
+  const handleChangeType = (e) => {
+    if (e.target.value === "") return;
+    const selectedId = parseInt(e.target.value);
+    const selectedType = types.find((type) => selectedId === type.id);
+    setNewCategory({ ...newCategory, type: selectedType });
+  };
 
   const handleAdd = async () => {
     const newSubCategories = newCategory.subCategories.map((sc) => {
@@ -52,6 +61,11 @@ const AdminGroups = () => {
       "https://localhost:7236/Group/InputGroup",
       newCategory
     );
+
+    const { dataType } = await axios.post(
+      `https://localhost:7236/CategoryBelongType/InputType/${newCategory.type.id}/${data}`
+    );
+
     // group information api call
     // group ifnromation data api call
     await axios.post(
@@ -159,6 +173,10 @@ const AdminGroups = () => {
   };
 
   useEffect(() => {
+    const getTypes = async () => {
+      const { data } = await axios.get("https://localhost:7236/Type/GetTypes");
+      setTypes(data);
+    };
     const getCategories = async () => {
       const { data } = await axios.get(
         `${baseURL}/SubCategory/GetSubCategories`
@@ -169,6 +187,7 @@ const AdminGroups = () => {
       const { data } = await axios.get(`${baseURL}/Group/GetGroups`);
       setSubCategories(data);
     };
+    getTypes();
     getCategories();
     getGroups();
   }, []);
@@ -199,6 +218,25 @@ const AdminGroups = () => {
       {isAdding && (
         <div className="admin-users-add-subcategories">
           <div className="admin-users-add-select">
+            {types.length !== 0 && (
+              <div className="admin-users-input">
+                <h5 className="admin-users-input-title">Tip:</h5>
+                <select
+                  className="admin-users-input-box"
+                  onChange={handleChangeType}
+                >
+                  <option value="tip"></option>
+                  {types.map((type) => {
+                    const { id, name } = type;
+                    return (
+                      <option key={id} value={id}>
+                        {name}
+                      </option>
+                    );
+                  })}
+                </select>
+              </div>
+            )}
             {categories.length !== 0 && (
               <div className="admin-users-input">
                 <h5 className="admin-users-input-title">Category:</h5>
@@ -288,10 +326,11 @@ const AdminGroups = () => {
           <div className="admin-users-main-item">Ime</div>
           {/*<div className="admin-users-main-item">Slika</div>*/}
           <div className="admin-users-main-item">Detalji</div>
+          <div className="admin-users-main-item">Tip</div>
         </div>
         {subCategories.length !== 0 &&
           subCategories.map((group) => {
-            const { id, name, details, picture } = group;
+            const { id, name, details, picture, type } = group;
             return (
               <div
                 className="admin-users-main-row"
@@ -301,6 +340,7 @@ const AdminGroups = () => {
                 <div className="admin-users-main-item">{id}</div>
                 <div className="admin-users-main-item">{name}</div>
                 <div className="admin-users-main-item">{details}</div>
+                <div className="admin-users-main-item">{type.name}</div>
                 {/*<div className="admin-users-main-item">{picture}</div>*/}
                 <div className="admin-users-main-item-options">
                   <CreateIcon

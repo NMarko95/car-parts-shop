@@ -7,18 +7,22 @@ import AdminGroups from "../../components/adminGroups/AdminGroups";
 import AdminEngine from "../../components/adminEngine/AdminEngine";
 import AdminVehicle from "../../components/adminVehicle/AdminVehicle";
 import AdminProduct from "../../components/adminProduct/AdminProduct";
+import AdminType from "../../components/adminType/AdminType";
+import AdminTransactions from "../../components/adminTransactions/AdminTransactions";
 
 const AdminPanel = () => {
   const [current, setCurrent] = useState("Users");
 
   const tabs = [
-    "Users",
-    "Categories",
-    "Subcategories",
-    "Engines",
-    "Groups",
-    "Vehicles",
-    "Products",
+    "Korisnici",
+    "Kategorije",
+    "Podkategorije",
+    "Motori",
+    "Grupe",
+    "Vozila",
+    "Proizvodi",
+    "Tip",
+    "Transakcije",
   ];
 
   return (
@@ -37,18 +41,22 @@ const AdminPanel = () => {
         })}
       </div>
       <div className="admin-panel-main">
-        {current === "Users" ? (
+        {current === "Korisnici" ? (
           <AdminUsers />
-        ) : current === "Categories" ? (
+        ) : current === "Kategorije" ? (
           <AdminCategories />
-        ) : current === "Subcategories" ? (
+        ) : current === "Podkategorije" ? (
           <AdminSubcategories />
-        ) : current === "Groups" ? (
+        ) : current === "Grupe" ? (
           <AdminGroups />
-        ) : current === "Engines" ? (
+        ) : current === "Motori" ? (
           <AdminEngine name={current} />
-        ) : current === "Vehicles" ? (
+        ) : current === "Vozila" ? (
           <AdminVehicle />
+        ) : current === "Tip" ? (
+          <AdminType />
+        ) : current === "Transakcije" ? (
+          <AdminTransactions />
         ) : (
           <AdminProduct />
         )}

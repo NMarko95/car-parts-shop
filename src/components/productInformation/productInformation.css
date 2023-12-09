@@ -3,7 +3,7 @@
     flex-direction: column;
     align-items: flex-start;
     padding: 5px 10px;
-    gap: 7px;
+    gap: 20px;
 }
 
 .product-information-title{
@@ -26,11 +26,11 @@
 }
 
 .product-information-contact.available{
-    color: #390;
+    color: green;
 }
 
 .product-information-contact.unavailable{
-    color: red;
+    color: #CF1E35;
 }
 
 .product-information-price{
@@ -77,28 +77,37 @@
     outline: none;
     transition: 0.3s ease;
     position: relative;
+    gap: 10px;
 }
 
 .product-information-btn.cart-btn{
-    background-color: #f37122;
+    background-color: green;
     color: #fff;
     border: none;
     margin-bottom: 5px;
 }
-
+.product-information-btn.cart-btn.unavailable
+{
+    background-color: #CF1E35;
+    color: #fff;
+    border: none;
+    margin-bottom: 5px;
+}
 .product-information-btn.cart-btn:hover{
-    background-color: #9c3f05;
+    background-color: #CF1E35;
 }
 
 .product-information-btn.wishlist{
     border: 1px solid #02111c;
     color: #02111c;
+    justify-content: flex-end;
+    padding-right: 20px;
 }
 
 .product-information-btn.wishlist:hover{
-    border: 1px solid #f37122;
+    border: 1px solid #FE0000;
     color: #fff;
-    background-color: #f37122;
+    background-color: #FE0000;
 }
 
 .product-information-icon{

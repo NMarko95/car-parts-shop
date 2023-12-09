@@ -16,7 +16,8 @@
 }
 
 .parts-show-wrapper > h3{
-    margin: 20px 0;
+    margin: 30px 0;
+    padding-top: 10px;
     font-weight: 500;
     font-size: 25px;
     align-self: flex-start;
@@ -48,6 +49,7 @@
 .parts-show-item-title{
     text-decoration: none;
     font-size: 23px;
+    color: darkblue;
     font-weight: 600;
     align-self: flex-start;
     margin: 10px 0;
@@ -100,9 +102,9 @@
 }
 
 .parts-show-item-btn:hover, .parts-show-btn:hover{
-    border: 1px solid #f37122;
+    border: 1px solid #FE0000;
     color: #fff;
-    background-color: #f37122;
+    background-color: #FE0000;
 }
 
 .parts-show-btn{

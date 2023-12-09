@@ -49,6 +49,31 @@ const AdminComponent = ({ emptyObject, dataEntries, urls, name }) => {
     setUsers(users.filter((user) => user.id !== id));
   };*/
 
+  const readFileDataAsBase64 = (e) => {
+    const file = e.target.files[0];
+
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+
+      reader.onload = (event) => {
+        resolve(event.target.result);
+      };
+
+      reader.onerror = (err) => {
+        reject(err);
+      };
+
+      reader.readAsDataURL(file);
+    });
+  };
+
+  const handleUploadFile = (e) => {
+    readFileDataAsBase64(e).then((data) => {
+      console.log(data);
+      setNewObject({ ...newObject, picture: data });
+    });
+  };
+
   useEffect(() => {
     const getMethod = async () => {
       const { data } = await axios.get(urls[1]);
@@ -83,7 +108,12 @@ const AdminComponent = ({ emptyObject, dataEntries, urls, name }) => {
                   type={value === "picture" ? "file" : "text"}
                   className="admin-users-input-box"
                   onChange={(e) =>
-                    setNewObject({ ...newObject, [value]: e.target.value })
+                    value === "picture"
+                      ? handleUploadFile(e)
+                      : setNewObject({
+                          ...newObject,
+                          [value]: e.target.value,
+                        })
                   }
                 />
               </div>
@@ -110,8 +140,21 @@ const AdminComponent = ({ emptyObject, dataEntries, urls, name }) => {
             return (
               <div className="admin-users-main-row" key={obj.id}>
                 {Object.entries(obj).map((entry) => {
-                  return (
+                  console.log(entry[0]);
+                  console.log(entry[0] !== "picture");
+                  return entry[0] !== "picture" ? (
                     <div className="admin-users-main-item">{entry[1]}</div>
+                  ) : (
+                    <div className="admin-users-main-item">
+                      <img
+                        src={entry[1]}
+                        style={{
+                          width: "50px",
+                          height: "50px",
+                          alignSelf: "center",
+                        }}
+                      />
+                    </div>
                   );
                 })}
                 <div className="admin-users-main-item-options">
@@ -158,10 +201,12 @@ const AdminComponent = ({ emptyObject, dataEntries, urls, name }) => {
                     }
                     className="admin-users-update-input-box"
                     onChange={(e) =>
-                      setNewObject({
-                        ...newObject,
-                        [value]: e.target.value,
-                      })
+                      value === "picture"
+                        ? handleUploadFile(e)
+                        : setNewObject({
+                            ...newObject,
+                            [value]: e.target.value,
+                          })
                     }
                   />
                 </div>

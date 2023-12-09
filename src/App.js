@@ -1,17 +1,19 @@
 import "./app.css";
 import Navbar from "./components/navbar/Navbar";
-import SelectNavbar from "./components/selectNavbar/SelectNavbar";
-import HelpHero from "./components/helpHero/HelpHero";
 import Footer from "./components/footer/Footer";
 import { Outlet } from "react-router-dom";
+import TypeNavbar from "./components/typeNavbar/TypeNavbar";
+import { useRef, useState } from "react";
 
 function App() {
+  const [selectedType, setSelectedType] = useState(null);
+
   return (
     <div className="app">
       <Navbar />
-      <SelectNavbar />
+      <TypeNavbar setSelectedType={setSelectedType} />
       {/*<HelpHero />*/}
-      <Outlet />
+      <Outlet context={[selectedType, setSelectedType]} />
       <Footer />
     </div>
   );

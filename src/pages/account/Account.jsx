@@ -1,21 +1,23 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./account.css";
 import axios from "axios";
 import AccountInformation from "../../components/accountInformation/AccountInformation";
 import { useGlobalContext } from "../../context/Context";
 import AccountTransactions from "../../components/accountTransactions/AccountTransactions";
+import { useParams } from "react-router-dom";
 
 const Account = () => {
-  const [current, setCurrent] = useState("Informacije o korisniku");
+  const { tab } = useParams();
+
+  const [current, setCurrent] = useState(tab);
 
   const { user } = useGlobalContext();
 
-  const tabs = [
-    "Informacije o korisniku",
-    "Lista zelja",
-    "Porudzbine",
-    "Promena sifre",
-  ];
+  const tabs = ["Informacije o korisniku", "Porudzbine", "Promena sifre"];
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [tab]);
 
   return (
     <div className="account">

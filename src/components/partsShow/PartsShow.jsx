@@ -1,15 +1,27 @@
+import { useGlobalContext } from "../../context/Context";
 import "./partsShow.css";
 import { Link } from "react-router-dom";
-import useMediaQuery from "@mui/material/useMediaQuery";
 
-const PartsShow = ({ subcategories, categories }) => {
-  const smallWidth = useMediaQuery("(min-width:350px) and (max-width:750px)");
+const PartsShow = ({ subcategories, categories, title }) => {
+  const { selectedVehicle } = useGlobalContext();
+
+  const createUrl = (g) => {
+    if (g.hasVehicle) {
+      if (selectedVehicle !== null) {
+        return `/products/${g.id}`;
+      } else {
+        return ``; // komponenta za odabir vozila
+      }
+    } else {
+      return `/products/${g.id}`;
+    }
+  };
 
   return (
     <>
-      <div className="parts-show">
+      <div className="parts-show" id="parts">
         <div className="parts-show-wrapper">
-          <h3>Najtrazeniji delovi</h3>
+          <h3>{title}</h3>
           <div className="parts-show-list">
             {subcategories.length !== 0 &&
               subcategories.map((sc, i) => {
@@ -28,7 +40,7 @@ const PartsShow = ({ subcategories, categories }) => {
                           groups.map((g) => {
                             return (
                               <Link
-                                to={`/products/${g.id}`}
+                                to={createUrl(g)}
                                 key={g.id}
                                 className="parts-show-item-description-link"
                               >
@@ -86,12 +98,16 @@ const PartsShow = ({ subcategories, categories }) => {
                       />
                     </div>
                     <div className="parts-show-item-separator" />
-                    <button className="parts-show-item-btn">Detalji</button>
+                    <Link
+                      to={`/choose-category/${id}`}
+                      className="parts-show-item-btn"
+                    >
+                      Detalji
+                    </Link>
                   </article>
                 );
               })}
           </div>
-          <button className="parts-show-btn">Pogledaj vise</button>
         </div>
       </div>
     </>

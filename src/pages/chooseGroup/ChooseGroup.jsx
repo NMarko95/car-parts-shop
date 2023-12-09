@@ -2,7 +2,6 @@ import { useParams, Link, useLocation } from "react-router-dom";
 import "./chooseGroup.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import useMediaQuery from "@mui/material/useMediaQuery";
 
 const ChooseGroup = () => {
   const { catid } = useParams();
@@ -14,8 +13,6 @@ const ChooseGroup = () => {
   const [subCategory, setSubCategory] = useState(null);
 
   const baseURL = "https://localhost:7236";
-
-  const smallWidth = useMediaQuery("(min-width:350px) and (max-width:750px)");
 
   const makeUrl = (id) => {
     if (urlChoose === "subcategory") return `/products/${id}`;
